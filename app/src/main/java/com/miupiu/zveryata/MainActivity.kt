@@ -2,6 +2,8 @@ package com.miupiu.zveryata
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
+import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import androidx.activity.ComponentActivity
@@ -43,6 +45,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.math.roundToInt
 
 private const val AUTO_ADVANCE_MS = 30_000L
 private const val SWIPE_COOLDOWN_MS = 350L
@@ -85,6 +90,9 @@ private fun ZveryataGallery() {
     val lifecycleOwner = LocalLifecycleOwner.current
     val density = LocalDensity.current
     val swipeThresholdPx = with(density) { 72.dp.toPx() }
+    val displayMetrics = context.resources.displayMetrics
+    val targetWidthPx = displayMetrics.widthPixels.coerceAtLeast(1)
+    val targetHeightPx = displayMetrics.heightPixels.coerceAtLeast(1)
 
     val slides = remember {
         context.assets.list("images")
@@ -127,12 +135,22 @@ private fun ZveryataGallery() {
         }
     }
 
-    val bitmap by produceState<Bitmap?>(initialValue = null, currentIndex, slides) {
+    // Decode only approximately as many pixels as the screen can display. The previous
+    // version decoded every original WebP at full resolution; repeated swipes could leave
+    // several very large bitmaps waiting for GC and exhaust the app heap.
+    val bitmap by produceState<Bitmap?>(
+        initialValue = null,
+        currentIndex,
+        slides,
+        targetWidthPx,
+        targetHeightPx
+    ) {
         value = if (slides.isEmpty()) {
             null
         } else {
+            val assetPath = "images/${slides[currentIndex]}"
             withContext(Dispatchers.IO) {
-                context.assets.open("images/${slides[currentIndex]}").use(BitmapFactory::decodeStream)
+                decodeBitmapForScreen(context, assetPath, targetWidthPx, targetHeightPx)
             }
         }
     }
@@ -203,4 +221,64 @@ private fun ZveryataGallery() {
             )
         }
     }
+}
+
+private fun decodeBitmapForScreen(
+    context: android.content.Context,
+    assetPath: String,
+    reqWidth: Int,
+    reqHeight: Int
+): Bitmap {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        val source = ImageDecoder.createSource(context.assets, assetPath)
+        return ImageDecoder.decodeBitmap(source) { decoder, info, _ ->
+            val sourceWidth = info.size.width.coerceAtLeast(1)
+            val sourceHeight = info.size.height.coerceAtLeast(1)
+            val scale = min(
+                reqWidth.toFloat() / sourceWidth,
+                reqHeight.toFloat() / sourceHeight
+            ).coerceAtMost(1f)
+            val targetWidth = max(1, (sourceWidth * scale).roundToInt())
+            val targetHeight = max(1, (sourceHeight * scale).roundToInt())
+            decoder.setTargetSize(targetWidth, targetHeight)
+            decoder.allocator = ImageDecoder.ALLOCATOR_SOFTWARE
+        }
+    }
+
+    val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+    context.assets.open(assetPath).use { stream ->
+        BitmapFactory.decodeStream(stream, null, bounds)
+    }
+
+    var sampleSize = 1
+    while (
+        bounds.outWidth / (sampleSize * 2) >= reqWidth &&
+        bounds.outHeight / (sampleSize * 2) >= reqHeight
+    ) {
+        sampleSize *= 2
+    }
+
+    val options = BitmapFactory.Options().apply {
+        inSampleSize = sampleSize
+        inPreferredConfig = Bitmap.Config.ARGB_8888
+    }
+    val decoded = context.assets.open(assetPath).use { stream ->
+        BitmapFactory.decodeStream(stream, null, options)
+            ?: error("Could not decode $assetPath")
+    }
+
+    val scale = min(
+        reqWidth.toFloat() / decoded.width.coerceAtLeast(1),
+        reqHeight.toFloat() / decoded.height.coerceAtLeast(1)
+    ).coerceAtMost(1f)
+    if (scale >= 0.999f) return decoded
+
+    val scaled = Bitmap.createScaledBitmap(
+        decoded,
+        max(1, (decoded.width * scale).roundToInt()),
+        max(1, (decoded.height * scale).roundToInt()),
+        true
+    )
+    if (scaled !== decoded) decoded.recycle()
+    return scaled
 }
