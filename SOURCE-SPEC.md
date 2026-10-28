@@ -12,6 +12,28 @@ The existing PWA remains untouched in:
 
 Use the PWA only as a behavior/asset reference. The Android app must be native Kotlin + Jetpack Compose and must not depend on the web app at runtime.
 
+## NON-NEGOTIABLE: use ONLY the existing approved photos
+
+The Android app must use **only the existing canonical animal photographs** from:
+
+`miu-piu/kids-games/animals-click/assets/images/`
+
+These exact files are the approved visual set.
+
+Do NOT:
+
+- generate replacement animal images;
+- create new AI photos;
+- substitute stock images;
+- redraw animals;
+- enhance/recompose the original pictures into different scenes;
+- use remote image URLs at runtime;
+- invent missing animals.
+
+If a canonical image is missing or cannot be synced, fail clearly and report the missing filename instead of generating a replacement.
+
+`python3 scripts/sync_assets.py` is the canonical way to copy these approved files into this Android workspace before building.
+
 ## Android identity
 
 - App name: `Зверята`
@@ -43,14 +65,25 @@ Autoplay:
 - automatic transition restarts the timer
 - wrap at both ends
 
-## Image rendering
+## Image rendering on Galaxy / mismatched aspect ratios
 
-- Keep the main photo fully visible and centered.
-- Do not crop the animal.
-- Preserve aspect ratio.
-- Fill unused screen area with a blurred/dimmed enlarged version of the same photo behind the sharp foreground image.
-- Work correctly on different Android screen sizes.
-- Preload only current/next/previous images or another memory-safe small window; do not decode the entire gallery at once.
+The canonical photos and the phone screen do not necessarily have the same aspect ratio. **Do not crop or regenerate the photo to force a match.** Solve the mismatch only in the Android layout.
+
+Required rendering:
+
+1. Draw the same canonical photo as a full-screen background using a crop/fill mode so the entire screen is covered.
+2. Blur and slightly dim that background copy.
+3. Draw a second, sharp copy of the exact same photo on top, centered.
+4. The sharp foreground copy must use a FIT/CONTAIN behavior equivalent to Jetpack Compose `ContentScale.Fit`.
+5. The entire original foreground photo must remain visible; no animal, paws, ears, tail, wings, horns, etc. may be cut off.
+6. Preserve the original aspect ratio; never stretch the foreground photo.
+7. The blurred background may be cropped because it is decorative only.
+8. No black bars, white bars, borders, cards, frames, text, gradients, or visible UI around the sharp photo.
+9. The composition must work on the user's tall Samsung Galaxy Ultra screen and on other Android sizes without modifying the source image files.
+
+In Compose terms, the intended structure is approximately a full-screen `Box`: blurred `Image(..., ContentScale.Crop)` behind + sharp centered `Image(..., ContentScale.Fit)` above.
+
+Preload only current/next/previous images or another memory-safe small window; do not decode the entire gallery at once.
 
 ## Android system behavior
 
@@ -148,4 +181,4 @@ For Android, create proper adaptive launcher icon resources from the current `zv
 
 Run `python3 scripts/sync_assets.py` from repository root to copy the current source photos and icons from the public `kids-games/animals-click` source into `reference/assets/`.
 
-The final native Android project should package the photos locally in APK/AAB resources or assets. Runtime network access is not required.
+The final native Android project should package those exact synced photos locally in APK/AAB resources or assets. Runtime network access is not required.
