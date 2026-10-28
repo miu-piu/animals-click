@@ -43,6 +43,8 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import kotlin.math.abs
 import kotlin.math.max
@@ -93,6 +95,7 @@ private fun ZveryataGallery() {
     val displayMetrics = context.resources.displayMetrics
     val targetWidthPx = displayMetrics.widthPixels.coerceAtLeast(1)
     val targetHeightPx = displayMetrics.heightPixels.coerceAtLeast(1)
+    val decodeMutex = remember { Mutex() }
 
     val slides = remember {
         context.assets.list("images")
@@ -137,7 +140,8 @@ private fun ZveryataGallery() {
 
     // Decode only approximately as many pixels as the screen can display. The previous
     // version decoded every original WebP at full resolution; repeated swipes could leave
-    // several very large bitmaps waiting for GC and exhaust the app heap.
+    // several very large bitmaps waiting for GC and exhaust the app heap. The mutex also
+    // guarantees that rapid swipes cannot run several expensive decodes simultaneously.
     val bitmap by produceState<Bitmap?>(
         initialValue = null,
         currentIndex,
@@ -150,7 +154,9 @@ private fun ZveryataGallery() {
         } else {
             val assetPath = "images/${slides[currentIndex]}"
             withContext(Dispatchers.IO) {
-                decodeBitmapForScreen(context, assetPath, targetWidthPx, targetHeightPx)
+                decodeMutex.withLock {
+                    decodeBitmapForScreen(context, assetPath, targetWidthPx, targetHeightPx)
+                }
             }
         }
     }
