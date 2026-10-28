@@ -10,7 +10,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -30,6 +30,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.input.pointer.awaitFirstDown
+import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -46,16 +48,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
 
-private const val AUTO_ADVANCE_MS = 30_000L
-private const val SWIPE_COOLDOWN_MS = 350L
-private const val MIN_SWIPE_MS = 90L
-private const val MAX_SWIPE_MS = 900L
-private const val AXIS_DOMINANCE = 1.8f
 private val AppBlack = Color.Black
 
 class MainActivity : ComponentActivity() {
@@ -92,6 +88,7 @@ private fun ZveryataGallery() {
     val lifecycleOwner = LocalLifecycleOwner.current
     val density = LocalDensity.current
     val swipeThresholdPx = with(density) { 72.dp.toPx() }
+    val tapSlopPx = with(density) { 24.dp.toPx() }
     val displayMetrics = context.resources.displayMetrics
     val targetWidthPx = displayMetrics.widthPixels.coerceAtLeast(1)
     val targetHeightPx = displayMetrics.heightPixels.coerceAtLeast(1)
@@ -124,13 +121,13 @@ private fun ZveryataGallery() {
 
     fun move(delta: Int) {
         if (slides.isEmpty()) return
-        currentIndex = (currentIndex + delta + slides.size) % slides.size
+        currentIndex = wrapIndex(currentIndex, delta, slides.size)
         lastChangeAt = SystemClock.elapsedRealtime()
     }
 
-    // currentIndex changes after every valid manual or automatic transition, so this
-    // coroutine is cancelled/restarted. Taps do not change state and therefore do not
-    // reset the 30-second timer.
+    // Every successful manual navigation and every automatic transition changes currentIndex,
+    // so this coroutine restarts from 30 seconds. A center tap changes no state and therefore
+    // does not reset the timer.
     LaunchedEffect(currentIndex, isForeground, slides.size) {
         if (isForeground && slides.isNotEmpty()) {
             delay(AUTO_ADVANCE_MS)
@@ -138,10 +135,8 @@ private fun ZveryataGallery() {
         }
     }
 
-    // Decode only approximately as many pixels as the screen can display. The previous
-    // version decoded every original WebP at full resolution; repeated swipes could leave
-    // several very large bitmaps waiting for GC and exhaust the app heap. The mutex also
-    // guarantees that rapid swipes cannot run several expensive decodes simultaneously.
+    // Decode only approximately as many pixels as the screen can display. The mutex prevents
+    // rapid navigation from running multiple expensive decodes at the same time.
     val bitmap by produceState<Bitmap?>(
         initialValue = null,
         currentIndex,
@@ -165,55 +160,49 @@ private fun ZveryataGallery() {
         modifier = Modifier
             .fillMaxSize()
             .background(AppBlack)
-            .pointerInput(slides.size, swipeThresholdPx) {
-                var dragX = 0f
-                var dragY = 0f
-                var dragStartedAt = 0L
+            .pointerInput(slides.size, swipeThresholdPx, tapSlopPx, targetWidthPx) {
+                awaitEachGesture {
+                    val down = awaitFirstDown(requireUnconsumed = false)
+                    val startX = down.position.x
+                    val startedAt = SystemClock.elapsedRealtime()
+                    var dragX = 0f
+                    var dragY = 0f
+                    var completedNormally = false
 
-                detectDragGestures(
-                    onDragStart = {
-                        dragX = 0f
-                        dragY = 0f
-                        dragStartedAt = SystemClock.elapsedRealtime()
-                    },
-                    onDragCancel = {
-                        dragX = 0f
-                        dragY = 0f
-                        dragStartedAt = 0L
-                    },
-                    onDragEnd = {
-                        val now = SystemClock.elapsedRealtime()
-                        val elapsed = now - dragStartedAt
-                        val absX = abs(dragX)
-                        val absY = abs(dragY)
-                        val horizontal = absX >= absY * AXIS_DOMINANCE
-                        val vertical = absY >= absX * AXIS_DOMINANCE
-                        val distance = if (horizontal) absX else if (vertical) absY else 0f
-                        val validDuration = elapsed in MIN_SWIPE_MS..MAX_SWIPE_MS
-                        val cooldownPassed = now - lastChangeAt >= SWIPE_COOLDOWN_MS
-
-                        if (
-                            slides.isNotEmpty() &&
-                            validDuration &&
-                            cooldownPassed &&
-                            distance >= swipeThresholdPx
-                        ) {
-                            when {
-                                horizontal -> move(if (dragX < 0f) 1 else -1)
-                                vertical -> move(if (dragY < 0f) 1 else -1)
-                            }
+                    while (true) {
+                        val event = awaitPointerEvent()
+                        val change = event.changes.firstOrNull { it.id == down.id } ?: break
+                        val delta = change.positionChange()
+                        dragX += delta.x
+                        dragY += delta.y
+                        if (delta.x != 0f || delta.y != 0f) {
+                            change.consume()
                         }
-
-                        dragX = 0f
-                        dragY = 0f
-                        dragStartedAt = 0L
-                    },
-                    onDrag = { change, dragAmount ->
-                        change.consume()
-                        dragX += dragAmount.x
-                        dragY += dragAmount.y
+                        if (!change.pressed) {
+                            completedNormally = true
+                            break
+                        }
                     }
-                )
+
+                    if (completedNormally && slides.isNotEmpty()) {
+                        val now = SystemClock.elapsedRealtime()
+                        val action = classifyGesture(
+                            dragX = dragX,
+                            dragY = dragY,
+                            elapsedMs = now - startedAt,
+                            startX = startX,
+                            screenWidthPx = targetWidthPx,
+                            swipeThresholdPx = swipeThresholdPx,
+                            tapSlopPx = tapSlopPx,
+                            cooldownPassed = now - lastChangeAt >= SWIPE_COOLDOWN_MS
+                        )
+                        when (action) {
+                            GestureAction.NEXT -> move(1)
+                            GestureAction.PREVIOUS -> move(-1)
+                            GestureAction.NONE -> Unit
+                        }
+                    }
+                }
             },
         contentAlignment = Alignment.Center
     ) {
