@@ -28,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.input.pointer.consume
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -46,8 +45,11 @@ import kotlinx.coroutines.withContext
 import kotlin.math.abs
 
 private const val AUTO_ADVANCE_MS = 30_000L
-private const val SWIPE_COOLDOWN_MS = 400L
-private val AppBlack = Color(0xFF000000)
+private const val SWIPE_COOLDOWN_MS = 350L
+private const val MIN_SWIPE_MS = 90L
+private const val MAX_SWIPE_MS = 900L
+private const val AXIS_DOMINANCE = 1.8f
+private val AppBlack = Color.Black
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,10 +59,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MaterialTheme(
-                colorScheme = darkColorScheme(
-                    background = AppBlack,
-                    surface = AppBlack
-                )
+                colorScheme = darkColorScheme(background = AppBlack, surface = AppBlack)
             ) {
                 ZveryataGallery()
             }
@@ -85,7 +84,7 @@ private fun ZveryataGallery() {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val density = LocalDensity.current
-    val swipeThresholdPx = with(density) { 64.dp.toPx() }
+    val swipeThresholdPx = with(density) { 72.dp.toPx() }
 
     val slides = remember {
         context.assets.list("images")
@@ -97,15 +96,14 @@ private fun ZveryataGallery() {
     }
 
     var currentIndex by rememberSaveable { mutableIntStateOf(0) }
-    var lastSwipeAt by remember { mutableLongStateOf(0L) }
+    var lastChangeAt by remember { mutableLongStateOf(0L) }
     var isForeground by remember { mutableStateOf(true) }
 
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
                 Lifecycle.Event.ON_RESUME -> isForeground = true
-                Lifecycle.Event.ON_PAUSE,
-                Lifecycle.Event.ON_STOP -> isForeground = false
+                Lifecycle.Event.ON_PAUSE, Lifecycle.Event.ON_STOP -> isForeground = false
                 else -> Unit
             }
         }
@@ -116,8 +114,12 @@ private fun ZveryataGallery() {
     fun move(delta: Int) {
         if (slides.isEmpty()) return
         currentIndex = (currentIndex + delta + slides.size) % slides.size
+        lastChangeAt = SystemClock.elapsedRealtime()
     }
 
+    // currentIndex changes after every valid manual or automatic transition, so this
+    // coroutine is cancelled/restarted. Taps do not change state and therefore do not
+    // reset the 30-second timer.
     LaunchedEffect(currentIndex, isForeground, slides.size) {
         if (isForeground && slides.isNotEmpty()) {
             delay(AUTO_ADVANCE_MS)
@@ -130,55 +132,57 @@ private fun ZveryataGallery() {
             null
         } else {
             withContext(Dispatchers.IO) {
-                context.assets.open("images/${slides[currentIndex]}").use { stream ->
-                    BitmapFactory.decodeStream(stream)
-                }
+                context.assets.open("images/${slides[currentIndex]}").use(BitmapFactory::decodeStream)
             }
         }
     }
-
-    var dragX = 0f
-    var dragY = 0f
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(AppBlack)
             .pointerInput(slides.size, swipeThresholdPx) {
+                var dragX = 0f
+                var dragY = 0f
+                var dragStartedAt = 0L
+
                 detectDragGestures(
                     onDragStart = {
                         dragX = 0f
                         dragY = 0f
+                        dragStartedAt = SystemClock.elapsedRealtime()
                     },
                     onDragCancel = {
                         dragX = 0f
                         dragY = 0f
+                        dragStartedAt = 0L
                     },
                     onDragEnd = {
                         val now = SystemClock.elapsedRealtime()
+                        val elapsed = now - dragStartedAt
                         val absX = abs(dragX)
                         val absY = abs(dragY)
-                        val enoughDistance = maxOf(absX, absY) >= swipeThresholdPx
-                        val cooldownPassed = now - lastSwipeAt >= SWIPE_COOLDOWN_MS
+                        val horizontal = absX >= absY * AXIS_DOMINANCE
+                        val vertical = absY >= absX * AXIS_DOMINANCE
+                        val distance = if (horizontal) absX else if (vertical) absY else 0f
+                        val validDuration = elapsed in MIN_SWIPE_MS..MAX_SWIPE_MS
+                        val cooldownPassed = now - lastChangeAt >= SWIPE_COOLDOWN_MS
 
-                        if (enoughDistance && cooldownPassed && slides.isNotEmpty()) {
-                            val horizontal = absX >= absY * 1.35f
-                            val vertical = absY >= absX * 1.35f
-
+                        if (
+                            slides.isNotEmpty() &&
+                            validDuration &&
+                            cooldownPassed &&
+                            distance >= swipeThresholdPx
+                        ) {
                             when {
-                                horizontal -> {
-                                    lastSwipeAt = now
-                                    move(if (dragX < 0f) 1 else -1)
-                                }
-                                vertical -> {
-                                    lastSwipeAt = now
-                                    move(if (dragY < 0f) 1 else -1)
-                                }
+                                horizontal -> move(if (dragX < 0f) 1 else -1)
+                                vertical -> move(if (dragY < 0f) 1 else -1)
                             }
                         }
 
                         dragX = 0f
                         dragY = 0f
+                        dragStartedAt = 0L
                     },
                     onDrag = { change, dragAmount ->
                         change.consume()
