@@ -16,30 +16,31 @@ Do NOT generate new animal images, AI replacements, stock images, redesigned sce
 
 The phone screen and the source photographs have different aspect ratios. Do NOT solve that by changing the images. Solve it only in layout:
 
-- full-screen blurred/dimmed background = same canonical photo with crop/fill behavior;
-- sharp foreground = exact same canonical photo centered with `ContentScale.Fit` or equivalent;
-- the full sharp photo must remain visible and preserve aspect ratio;
-- the animal must never be cropped;
-- the decorative blurred background may crop;
-- no black/white bars, cards, borders, captions, or UI.
+- full-screen background = pure black `#000000`;
+- show exactly one sharp canonical photo centered on that black background;
+- use `ContentScale.Fit` or equivalent;
+- the full original photo must remain visible and preserve aspect ratio;
+- the animal must never be cropped or stretched;
+- unused screen area stays pure black;
+- do NOT use a blurred duplicate, crop/fill background, gradients, cards, borders, captions, or other UI.
 
 Then:
 
-1. Run `python3 scripts/sync_assets.py` to download the canonical photos, current v3 launcher artwork, and PWA reference files from `miu-piu/kids-games/animals-click` into `reference/`.
-2. Create a normal buildable Android project in this repository.
+1. Run `python3 scripts/sync_assets.py` to download the canonical photos, current v3 launcher artwork, and PWA reference files from `miu-piu/kids-games/animals-click` and package the exact 59 photos into the Android app.
+2. Use the existing native Android project in this repository; do not create a competing replacement project.
 3. Use package name and namespace `com.miupiu.zveryata`. Do not leave production code under `com.example`.
 4. Set the application label to `Зверята`.
 5. Package all synced canonical gallery photos locally so the installed app works completely offline.
 6. Implement the gallery behavior exactly as described in `SOURCE-SPEC.md`: one photo, no visible controls, four-direction swipe navigation, taps do nothing, 30-second automatic next slide, circular navigation, protection against accidental/double gestures.
 7. First slide must be `01-arich.webp`.
-8. Render each slide using the fit-plus-blurred-background layout described above.
+8. Render each slide on a pure black fullscreen canvas with the source photo centered using `ContentScale.Fit`.
 9. Use edge-to-edge immersive fullscreen Android APIs.
 10. Keep compatibility with normal Android/Samsung Screen Pinning. Do not fake kiosk mode and do not force pinning programmatically.
-11. Use the current `zveryata-v3` artwork to generate proper Android adaptive launcher icons. Do not invent a new puppy icon.
+11. Use the current `zveryata-v3` artwork to create/use the Android launcher icon. Do not invent a new puppy icon.
 12. Avoid runtime network permissions and dependencies. No ads, analytics, Firebase, Gemini API, login, tracking, external links, push notifications, camera, microphone, contacts, or location.
-13. Use memory-safe image loading: current + adjacent slides or another small window, not all full-size bitmaps decoded simultaneously.
+13. Use memory-safe image loading; do not decode all 59 full-size bitmaps simultaneously.
 14. Build the project and fix build errors before stopping.
-15. Run or preview it on an Android emulator/device if available and verify gestures, 30-second auto-advance, wraparound, fullscreen rendering, offline design, app label, first slide, exact source images, and launcher icon.
+15. Run or preview it on an Android emulator/device if available and verify gestures, 30-second auto-advance, wraparound, fullscreen black-background rendering, offline design, app label, first slide, exact source images, and launcher icon.
 
 Important: the original PWA in `miu-piu/kids-games/animals-click` must remain untouched. This repository is the separate native Android implementation.
 
