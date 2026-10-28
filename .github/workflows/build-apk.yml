@@ -37,8 +37,23 @@ jobs:
           test -f app/src/main/assets/images/01-arich.webp
           test -f app/src/main/res/drawable-nodpi/zveryata_icon.png
 
+      - name: Verify offline manifest
+        run: |
+          ! grep -R "android.permission.INTERNET" app/src/main/AndroidManifest.xml
+
+      - name: Run unit tests
+        run: gradle :app:testDebugUnitTest --stacktrace
+
+      - name: Run Android lint
+        run: gradle :app:lintDebug --stacktrace
+
       - name: Build debug APK
         run: gradle :app:assembleDebug --stacktrace
+
+      - name: Verify packaged canonical assets
+        run: |
+          test "$(unzip -l app/build/outputs/apk/debug/app-debug.apk | awk '/assets\/images\/.*\.webp$/ {count++} END {print count+0}')" -eq 59
+          unzip -l app/build/outputs/apk/debug/app-debug.apk | grep -q 'assets/images/01-arich.webp'
 
       - name: Upload installable APK
         uses: actions/upload-artifact@v4
