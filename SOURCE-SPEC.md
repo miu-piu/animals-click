@@ -67,21 +67,23 @@ Autoplay:
 
 ## Image rendering on Galaxy / mismatched aspect ratios
 
-The canonical photos and the phone screen do not necessarily have the same aspect ratio. **Do not crop or regenerate the photo to force a match.** Solve the mismatch only in the Android layout.
+The canonical photos and the phone screen do not necessarily have the same aspect ratio. **Do not crop, stretch, regenerate, extend, inpaint, or otherwise modify the source photo to force a match.** Solve the mismatch only in the Android layout.
 
 Required rendering:
 
-1. Draw the same canonical photo as a full-screen background using a crop/fill mode so the entire screen is covered.
-2. Blur and slightly dim that background copy.
-3. Draw a second, sharp copy of the exact same photo on top, centered.
-4. The sharp foreground copy must use a FIT/CONTAIN behavior equivalent to Jetpack Compose `ContentScale.Fit`.
-5. The entire original foreground photo must remain visible; no animal, paws, ears, tail, wings, horns, etc. may be cut off.
-6. Preserve the original aspect ratio; never stretch the foreground photo.
-7. The blurred background may be cropped because it is decorative only.
-8. No black bars, white bars, borders, cards, frames, text, gradients, or visible UI around the sharp photo.
-9. The composition must work on the user's tall Samsung Galaxy Ultra screen and on other Android sizes without modifying the source image files.
+1. The entire app canvas behind the photo must be pure black: `#000000`.
+2. Draw exactly one sharp canonical photo centered on that black canvas.
+3. The photo must use a FIT/CONTAIN behavior equivalent to Jetpack Compose `ContentScale.Fit`.
+4. The entire original photo must remain visible at all times.
+5. No animal, paws, ears, tail, wings, horns, whiskers, etc. may be cut off.
+6. Preserve the original aspect ratio; never stretch or distort the photo.
+7. If the screen is taller or wider than the source image, the unused area stays solid black.
+8. Do NOT use a blurred duplicate of the photo behind it.
+9. Do NOT use `ContentScale.Crop` for the sharp photo.
+10. No white bars, colored bars, gradients, decorative frames, cards, captions, text, or visible UI around the photo. Only the canonical photo plus pure black unused screen area.
+11. The composition must work on the user's tall Samsung Galaxy Ultra screen and on other Android sizes without modifying the source image files.
 
-In Compose terms, the intended structure is approximately a full-screen `Box`: blurred `Image(..., ContentScale.Crop)` behind + sharp centered `Image(..., ContentScale.Fit)` above.
+In Compose terms, the intended structure is approximately a full-screen black `Box` containing one centered `Image(..., ContentScale.Fit)`.
 
 Preload only current/next/previous images or another memory-safe small window; do not decode the entire gallery at once.
 
