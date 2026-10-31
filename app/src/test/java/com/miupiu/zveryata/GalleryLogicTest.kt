@@ -1,90 +1,64 @@
 package com.miupiu.zveryata
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class GalleryLogicTest {
-    private val screenWidth = 1000
     private val swipeThreshold = 100f
     private val tapSlop = 25f
 
-    private fun gesture(
+    private fun swipe(
         x: Float,
         y: Float,
         elapsed: Long = 250L,
-        startX: Float = 500f,
         cooldownPassed: Boolean = true
-    ): GestureAction = classifyGesture(
+    ): GestureAction = classifyHorizontalSwipe(
         dragX = x,
         dragY = y,
         elapsedMs = elapsed,
-        startX = startX,
-        screenWidthPx = screenWidth,
         swipeThresholdPx = swipeThreshold,
-        tapSlopPx = tapSlop,
         cooldownPassed = cooldownPassed
     )
 
     @Test
     fun swipeLeftGoesNext() {
-        assertEquals(GestureAction.NEXT, gesture(x = -160f, y = 10f))
+        assertEquals(GestureAction.NEXT, swipe(x = -160f, y = 10f))
     }
 
     @Test
     fun swipeRightGoesPrevious() {
-        assertEquals(GestureAction.PREVIOUS, gesture(x = 160f, y = 10f))
+        assertEquals(GestureAction.PREVIOUS, swipe(x = 160f, y = 10f))
     }
 
     @Test
-    fun swipeUpGoesNext() {
-        assertEquals(GestureAction.NEXT, gesture(x = 10f, y = -160f))
-    }
-
-    @Test
-    fun swipeDownGoesPrevious() {
-        assertEquals(GestureAction.PREVIOUS, gesture(x = 10f, y = 160f))
+    fun verticalSwipeDoesNothing() {
+        assertEquals(GestureAction.NONE, swipe(x = 10f, y = -160f))
+        assertEquals(GestureAction.NONE, swipe(x = 10f, y = 160f))
     }
 
     @Test
     fun diagonalGestureDoesNothing() {
-        assertEquals(GestureAction.NONE, gesture(x = 160f, y = 150f))
+        assertEquals(GestureAction.NONE, swipe(x = 160f, y = 150f))
     }
 
     @Test
-    fun shortMovementInCenterDoesNothing() {
-        assertEquals(GestureAction.NONE, gesture(x = 20f, y = 5f, startX = 500f))
-    }
-
-    @Test
-    fun leftEdgeTapGoesPrevious() {
-        assertEquals(GestureAction.PREVIOUS, gesture(x = 0f, y = 0f, elapsed = 120L, startX = 100f))
-    }
-
-    @Test
-    fun rightEdgeTapGoesNext() {
-        assertEquals(GestureAction.NEXT, gesture(x = 0f, y = 0f, elapsed = 120L, startX = 900f))
-    }
-
-    @Test
-    fun centerTapDoesNothing() {
-        assertEquals(GestureAction.NONE, gesture(x = 0f, y = 0f, elapsed = 120L, startX = 500f))
-    }
-
-    @Test
-    fun longPressDoesNothing() {
-        assertEquals(GestureAction.NONE, gesture(x = 0f, y = 0f, elapsed = 700L, startX = 900f))
+    fun shortMovementDoesNothing() {
+        assertEquals(GestureAction.NONE, swipe(x = 20f, y = 5f))
     }
 
     @Test
     fun cooldownBlocksNavigation() {
-        assertEquals(
-            GestureAction.NONE,
-            gesture(x = -160f, y = 0f, cooldownPassed = false)
-        )
-        assertEquals(
-            GestureAction.NONE,
-            gesture(x = 0f, y = 0f, elapsed = 120L, startX = 900f, cooldownPassed = false)
-        )
+        assertEquals(GestureAction.NONE, swipe(x = -160f, y = 0f, cooldownPassed = false))
+    }
+
+    @Test
+    fun tapsNeverNavigateAndAreRecognizedForTimerReset() {
+        assertTrue(isTap(0f, 0f, 120L, tapSlop))
+        assertTrue(isTap(15f, 5f, 120L, tapSlop))
+        assertFalse(isTap(40f, 0f, 120L, tapSlop))
+        assertFalse(isTap(0f, 0f, 700L, tapSlop))
     }
 
     @Test
@@ -112,7 +86,7 @@ class GalleryLogicTest {
     }
 
     @Test
-    fun autoAdvanceIntervalIsThirtySeconds() {
-        assertEquals(30_000L, AUTO_ADVANCE_MS)
+    fun autoAdvanceIntervalIsFifteenSeconds() {
+        assertEquals(15_000L, AUTO_ADVANCE_MS)
     }
 }
