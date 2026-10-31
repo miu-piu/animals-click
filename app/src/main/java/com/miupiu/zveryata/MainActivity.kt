@@ -90,6 +90,8 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+// Every physical finger gets independent state, so fingers already resting on the screen do not
+// prevent a newly placed finger from becoming the one that performs the next valid swipe.
 private data class PointerTrack(
     val startedAt: Long,
     var drag: Offset = Offset.Zero,
