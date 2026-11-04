@@ -11,7 +11,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
-import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.input.pointer.PointerId
 import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
@@ -53,6 +53,13 @@ import kotlin.math.min
 import kotlin.math.roundToInt
 
 private val AppBlack = Color.Black
+
+private data class TrackedTouch(
+    val startX: Float,
+    val startedAt: Long,
+    var dragX: Float = 0f,
+    var dragY: Float = 0f
+)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -162,46 +169,48 @@ private fun ZveryataGallery() {
             .background(AppBlack)
             .pointerInput(slides.size, swipeThresholdPx, tapSlopPx, targetWidthPx) {
                 awaitEachGesture {
-                    val down = awaitFirstDown(requireUnconsumed = false)
-                    val startX = down.position.x
-                    val startedAt = SystemClock.elapsedRealtime()
-                    var dragX = 0f
-                    var dragY = 0f
-                    var completedNormally = false
-
-                    while (true) {
+                    // Track every pointer independently. A finger resting on the screen must
+                    // never prevent a different finger from starting a new gesture.
+                    val touches = mutableMapOf<PointerId, TrackedTouch>()
+                    do {
                         val event = awaitPointerEvent()
-                        val change = event.changes.firstOrNull { it.id == down.id } ?: break
-                        val delta = change.positionChange()
-                        dragX += delta.x
-                        dragY += delta.y
-                        if (delta.x != 0f || delta.y != 0f) {
-                            change.consume()
-                        }
-                        if (!change.pressed) {
-                            completedNormally = true
-                            break
-                        }
-                    }
-
-                    if (completedNormally && slides.isNotEmpty()) {
                         val now = SystemClock.elapsedRealtime()
-                        val action = classifyGesture(
-                            dragX = dragX,
-                            dragY = dragY,
-                            elapsedMs = now - startedAt,
-                            startX = startX,
-                            screenWidthPx = targetWidthPx,
-                            swipeThresholdPx = swipeThresholdPx,
-                            tapSlopPx = tapSlopPx,
-                            cooldownPassed = now - lastChangeAt >= SWIPE_COOLDOWN_MS
-                        )
-                        when (action) {
-                            GestureAction.NEXT -> move(1)
-                            GestureAction.PREVIOUS -> move(-1)
-                            GestureAction.NONE -> Unit
+                        for (change in event.changes) {
+                            if (change.pressed && !change.previousPressed) {
+                                touches[change.id] = TrackedTouch(
+                                    startX = change.position.x,
+                                    startedAt = now
+                                )
+                            }
+
+                            val touch = touches[change.id] ?: continue
+                            val delta = change.positionChange()
+                            touch.dragX += delta.x
+                            touch.dragY += delta.y
+                            if (delta.x != 0f || delta.y != 0f) change.consume()
+
+                            if (!change.pressed) {
+                                touches.remove(change.id)
+                                if (slides.isNotEmpty()) {
+                                    val action = classifyGesture(
+                                        dragX = touch.dragX,
+                                        dragY = touch.dragY,
+                                        elapsedMs = now - touch.startedAt,
+                                        startX = touch.startX,
+                                        screenWidthPx = targetWidthPx,
+                                        swipeThresholdPx = swipeThresholdPx,
+                                        tapSlopPx = tapSlopPx,
+                                        cooldownPassed = now - lastChangeAt >= SWIPE_COOLDOWN_MS
+                                    )
+                                    when (action) {
+                                        GestureAction.NEXT -> move(1)
+                                        GestureAction.PREVIOUS -> move(-1)
+                                        GestureAction.NONE -> Unit
+                                    }
+                                }
+                            }
                         }
-                    }
+                    } while (event.changes.any { it.pressed })
                 }
             },
         contentAlignment = Alignment.Center
