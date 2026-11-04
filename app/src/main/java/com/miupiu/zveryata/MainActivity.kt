@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -21,6 +22,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
@@ -131,6 +133,7 @@ private fun ZveryataGallery() {
 
     var currentIndex by rememberSaveable { mutableIntStateOf(0) }
     var timerGeneration by remember { mutableIntStateOf(0) }
+    var lastManualChangeAt by remember { mutableLongStateOf(0L) }
     var isForeground by remember { mutableStateOf(true) }
 
     DisposableEffect(lifecycleOwner) {
@@ -149,6 +152,14 @@ private fun ZveryataGallery() {
         if (slides.isEmpty()) return
         currentIndex = wrapIndex(currentIndex, 1, slides.size)
         timerGeneration++
+    }
+
+    fun tryManualNext(): Boolean {
+        val now = SystemClock.elapsedRealtime()
+        if (slides.isEmpty() || now - lastManualChangeAt < MANUAL_COOLDOWN_MS) return false
+        lastManualChangeAt = now
+        nextSlide()
+        return true
     }
 
     LaunchedEffect(timerGeneration, isForeground, slides.size) {
@@ -183,7 +194,7 @@ private fun ZveryataGallery() {
                                 val delta = change.position - track.start
                                 if (movementExceedsThreshold(delta.x, delta.y, swipeThresholdPx)) {
                                     track.triggered = true
-                                    nextSlide()
+                                    tryManualNext()
                                     change.consume()
                                 }
                             }
@@ -192,7 +203,7 @@ private fun ZveryataGallery() {
                                     val delta = change.position - track.start
                                     if (isTapMovement(delta.x, delta.y, tapSlopPx)) {
                                         track.triggered = true
-                                        nextSlide()
+                                        tryManualNext()
                                         change.consume()
                                     }
                                 }
