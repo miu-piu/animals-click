@@ -3,7 +3,7 @@ package com.miupiu.zveryata
 import kotlin.math.abs
 
 internal const val AUTO_ADVANCE_MS = 30_000L
-internal const val SWIPE_COOLDOWN_MS = 350L
+internal const val SWIPE_COOLDOWN_MS = 3_000L
 internal const val MIN_SWIPE_MS = 90L
 internal const val MAX_SWIPE_MS = 900L
 internal const val MAX_TAP_MS = 500L
