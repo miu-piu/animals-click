@@ -1,6 +1,7 @@
 package com.miupiu.zveryata
 
 internal const val AUTO_ADVANCE_MS = 30_000L
+internal const val MANUAL_COOLDOWN_MS = 3_000L
 internal const val SWIPE_THRESHOLD_DP = 48
 internal const val TAP_SLOP_DP = 24
 
