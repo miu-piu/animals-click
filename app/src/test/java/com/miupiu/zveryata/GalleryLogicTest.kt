@@ -112,6 +112,24 @@ class GalleryLogicTest {
     }
 
     @Test
+    fun manualCooldownIsThreeSeconds() {
+        assertEquals(3_000L, SWIPE_COOLDOWN_MS)
+    }
+
+    @Test
+    fun newGestureAfterCooldownIsAccepted() {
+        val lastChangeAt = 10_000L
+        assertEquals(
+            GestureAction.NONE,
+            gesture(x = -160f, y = 0f, cooldownPassed = 12_999L - lastChangeAt >= SWIPE_COOLDOWN_MS)
+        )
+        assertEquals(
+            GestureAction.NEXT,
+            gesture(x = -160f, y = 0f, cooldownPassed = 13_000L - lastChangeAt >= SWIPE_COOLDOWN_MS)
+        )
+    }
+
+    @Test
     fun autoAdvanceIntervalIsThirtySeconds() {
         assertEquals(30_000L, AUTO_ADVANCE_MS)
     }
