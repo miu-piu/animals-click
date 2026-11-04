@@ -22,3 +22,7 @@ internal fun isTapMovement(
     deltaY: Float,
     tapSlopPx: Float
 ): Boolean = deltaX * deltaX + deltaY * deltaY <= tapSlopPx * tapSlopPx
+
+/** First navigation is immediate; later navigation is allowed at the exact 3s boundary. */
+internal fun manualNavigationAllowed(nowMs: Long, lastManualAtMs: Long): Boolean =
+    lastManualAtMs < 0L || (nowMs >= lastManualAtMs && nowMs - lastManualAtMs >= MANUAL_COOLDOWN_MS)
