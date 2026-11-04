@@ -6,6 +6,7 @@ import android.graphics.ImageDecoder
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.LruCache
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -122,6 +123,7 @@ private fun ZveryataGallery() {
     val targetWidthPx = displayMetrics.widthPixels.coerceAtLeast(1)
     val targetHeightPx = displayMetrics.heightPixels.coerceAtLeast(1)
     val decodeMutex = remember { Mutex() }
+    val bitmapCache = remember { LruCache<String, Bitmap>(3) }
 
     val slides = remember {
         context.assets.list("images")?.asSequence()
@@ -169,12 +171,29 @@ private fun ZveryataGallery() {
         }
     }
 
+    // Keep a small decoded-image cache and preload adjacent slides off the UI thread.
     val bitmap by produceState<Bitmap?>(null, currentIndex, slides, targetWidthPx, targetHeightPx) {
-        value = if (slides.isEmpty()) null else {
-            val assetPath = "images/${slides[currentIndex].assetName}"
-            withContext(Dispatchers.IO) {
-                decodeMutex.withLock { decodeBitmapForScreen(context, assetPath, targetWidthPx, targetHeightPx) }
+        if (slides.isEmpty()) {
+            value = null
+            return@produceState
+        }
+
+        suspend fun load(index: Int): Bitmap {
+            val name = slides[index].assetName
+            bitmapCache.get(name)?.let { return it }
+            return withContext(Dispatchers.IO) {
+                decodeMutex.withLock {
+                    bitmapCache.get(name) ?: decodeBitmapForScreen(
+                        context, "images/$name", targetWidthPx, targetHeightPx
+                    ).also { bitmapCache.put(name, it) }
+                }
             }
+        }
+
+        value = load(currentIndex)
+        if (slides.size > 1) {
+            load(wrapIndex(currentIndex, 1, slides.size))
+            load(wrapIndex(currentIndex, -1, slides.size))
         }
     }
 
