@@ -135,7 +135,7 @@ private fun ZveryataGallery() {
 
     var currentIndex by rememberSaveable { mutableIntStateOf(0) }
     var timerGeneration by remember { mutableIntStateOf(0) }
-    var lastManualChangeAt by remember { mutableLongStateOf(0L) }
+    var lastManualChangeAt by remember { mutableLongStateOf(-1L) }
     var isForeground by remember { mutableStateOf(true) }
 
     DisposableEffect(lifecycleOwner) {
@@ -158,7 +158,7 @@ private fun ZveryataGallery() {
 
     fun tryManualNext(): Boolean {
         val now = SystemClock.elapsedRealtime()
-        if (slides.isEmpty() || now - lastManualChangeAt < MANUAL_COOLDOWN_MS) return false
+        if (slides.isEmpty() || !manualNavigationAllowed(now, lastManualChangeAt)) return false
         lastManualChangeAt = now
         nextSlide()
         return true
