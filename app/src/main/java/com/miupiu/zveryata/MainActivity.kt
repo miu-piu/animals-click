@@ -194,9 +194,7 @@ private fun AnimalGallery() {
     ) {
         // On Galaxy S26 Ultra QHD+, available screen height minus 9:16 picture = 560 px.
         // For any other aspect ratio, keep the caption centered and let the image area adapt.
-        val naturalHeader = maxHeight - maxWidth * (16f / 9f)
-        val headerHeight = naturalHeader.coerceAtLeast(104.dp)
-            .coerceAtMost(maxHeight * 0.27f)
+        val headerHeight = adaptiveHeaderHeightDp(maxWidth.value, maxHeight.value).dp
 
         val screenWidth = maxWidth
         Column(Modifier.fillMaxSize()) {
