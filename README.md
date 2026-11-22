@@ -58,3 +58,15 @@ The legacy preview synchronizer is temporarily pinned to exact `miu-piu/kids-gam
 - `.github/workflows/android-ui-v2.yml`: actual Compose UI tests on Android emulator; captures FHD+/QHD+ emulator screenshots after test runs.
 
 Passing tests in a CI emulator is **not** a substitute for validating real multi-finger usage, Samsung Screen Pinning and installation/signature behavior on the target phone.
+
+## Подпись финальной версии
+
+`.github/workflows/release-v2.yml` — отдельная ручная сборка только после приёмки **всех 142** изображений. Она использует четыре закрытых параметра GitHub Actions: `ZVERYATA_KEYSTORE_B64`, `ZVERYATA_KEYSTORE_PASSWORD`, `ZVERYATA_KEY_ALIAS`, `ZVERYATA_KEY_PASSWORD`. Без них процесс останавливается и не публикует неподписанный APK. Приватный ключ не добавляется в репозиторий.
+
+Совпадение Android package ID `com.miupiu.zveryata` само по себе не позволяет заменить старый APK: нужен **тот же сертификат подписи**, которым была подписана установленная версия. Если прежняя версия подписана другим debug-ключом, требуется переустановка; обойти проверку Android нельзя.
+
+## Файлы источников
+
+`assets-v2/originals/legacy-ari.webp` — побайтно сохранённая историческая карточка Ари из старого исходного набора, SHA-256 `05d8c4828dc9a5c1ff9f8ccd412701e0629cd38bd804d6b80dff3134fc61675e`. Это **сохранённый файл прежней версии**, не доказательство происхождения фотографии. Изображение Ари не генерируется нейросетью в 2.0. Окончательный исходник должен пройти визуальную приёмку на соответствие конкретной собаке.
+
+Иконка `app/src/main/res/drawable-nodpi/zveryata_icon.png` теперь хранится в репозитории; финальная сборка не скачивает её из старой PWA.
