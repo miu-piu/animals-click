@@ -39,6 +39,17 @@ jobs:
             adb shell wm size 1440x3120
             adb shell wm density 560
             gradle :app:connectedDebugAndroidTest --stacktrace
+            mkdir -p app/build/screenshots/v2
+            adb shell am force-stop com.miupiu.zveryata
+            adb shell am start -n com.miupiu.zveryata/.MainActivity
+            sleep 3
+            adb exec-out screencap -p > app/build/screenshots/v2/galaxy-qhd-emulator.png
+            adb shell wm size 1080x2340
+            adb shell wm density 420
+            adb shell am force-stop com.miupiu.zveryata
+            adb shell am start -n com.miupiu.zveryata/.MainActivity
+            sleep 3
+            adb exec-out screencap -p > app/build/screenshots/v2/galaxy-fhd-emulator.png
       - name: Upload Android test reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -47,4 +58,5 @@ jobs:
           path: |
             app/build/reports/androidTests
             app/build/outputs/androidTest-results
+            app/build/screenshots/v2
           if-no-files-found: ignore
