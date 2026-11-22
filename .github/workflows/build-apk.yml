@@ -39,6 +39,17 @@ jobs:
       - name: Validate Zveryata 2.0 catalog and preview bundle
         run: python3 scripts/validate_catalog_v2.py
 
+      - name: Compile species-specific artwork briefs
+        run: python3 scripts/make_generation_briefs_v2.py
+
+      - name: Upload artwork briefs for production
+        uses: actions/upload-artifact@v4
+        with:
+          name: zveryata-v2-image-briefs
+          path: catalog/generation-briefs-v2.json
+          if-no-files-found: error
+          retention-days: 14
+
       - name: Verify exact source asset count
         run: |
           test "$(find app/src/main/assets/images -maxdepth 1 -type f -name '*.webp' | wc -l)" -eq 59
