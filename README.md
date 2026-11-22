@@ -8,24 +8,24 @@
 
 Журнал прогресса: `catalog/image-production-state-v2.json`. Карточка №001 `ari` отмечена как `skipped`. **Первая генерация — №002 `cat`**.
 
-[**Стартовый мастер-промпт — только новая генерация исходников с нуля**](docs/MASTER-PROMPT-GENERATION-ONLY-v2.md). Пока работает эта стадия, не собирать промежуточные обзоры, ZIP и APK; WebP и финальная визуальная приёмка — отдельный последующий этап.
+[**Стартовый мастер-промпт — генерация всех 141 оригинала**](docs/MASTER-PROMPT-GENERATION-ONLY-v2.md). **Сейчас только генерация и сохранение отдельных исходников.** Прогресс обновляется после каждого животного; десятки — только внутренние контрольные точки, без согласований, обзоров и ZIP. Конвертация WebP, подробная приёмка, обзорные листы и APK выполняются позже, отдельным этапом.
 
 ## Зафиксированные ТЗ и продолжение работы
 
 1. [**Основное ТЗ приложения**](docs/TZ-v2.md) — экран, навигация, Android, тесты, подпись и условия релиза.
 2. [**Отдельное ТЗ изображений**](docs/TZ-images-v2.md) — конкретный визуальный стандарт, генерация строго одной карточки за вызов, брак, обработка и приёмка.
-   - [**Мастер-промпт на всё производство без подтверждений между партиями**](docs/MASTER-PROMPT-IMAGE-PRODUCTION-v2.md) — последовательное автономное выполнение 15 партий, сохранение прогресса и восстановление после ограничений инструментов.
+   - [**Полный производственный регламент — следующий этап**](docs/MASTER-PROMPT-IMAGE-PRODUCTION-v2.md) — последующая приёмка, WebP, архивы и подготовка релиза; **не запускать его вместо текущей генерации оригиналов**.
    - [**Чистый позитивный шаблон для ImageGen**](docs/IMAGEGEN-CLEAN-PROMPT-v2.md) — только один конкретный вид и одна фотографическая сцена, без описания партий и истории ошибок.
 3. [**Каталог 142 карточек**](catalog/catalog-v2.json) — единственный точный список с ID, названием, видом, возрастом и сценой.
 4. [**15 партий по 10 / 2 карточки**](catalog/batches-v2.json) — производственный порядок, производный от каталога.
 5. `scripts/make_generation_briefs_v2.py` — воспроизводимые индивидуальные задания для 141 новой картинки (Ари исключена).
 
-**В новом чате:** открыть четыре файла выше, найти следующую незавершённую карточку, сгенерировать **одно животное одним вызовом**, проверить, сохранить оригинал и WebP. Коллажи создаёт только программный сборщик обзора после генерации; прежние картинки не переиспользовать, Ари не генерировать. Не путать 59 legacy-фотографий в preview APK с новой коллекцией.
+**В новом чате:** открыть [стартовый мастер-промпт генерации](docs/MASTER-PROMPT-GENERATION-ONLY-v2.md), затем указанные в нём каталог, журнал и [позитивный шаблон](docs/IMAGEGEN-CLEAN-PROMPT-v2.md). Создавать **одну отдельную фотографию одного животного за вызов**, сохранять оригинал и SHA-256 и переходить к следующему ID без промежуточных подтверждений. **На текущем этапе не делать WebP, листы или ZIP.**
 
 
 ## Статус
 
-Это **первый исполняемый прототип**, а не выпуск 142 новых фотографий. В нём старые 59 WebP используются только для проверки нового экрана, навигации и таймера. Окончательные 142 карточки и описания сцен лежат в `catalog/catalog-v2.json`. Старые фото будут заменены после индивидуальной проверки новой серии.
+Android-код находится на стадии **исполняемого прототипа**; runtime preview-каталог содержит 59 временных изображений для проверки экрана, жестов и таймера. Это **не** 142 утверждённых финальных карточки. На текущем этапе создаются исходники 141 новой фотографии по каталогу, и только после их подготовки можно переходить к финальной интеграции.
 
 ## Поведение прототипа
 
@@ -52,7 +52,7 @@ APK с CI debug-подписью не гарантирует обновлени�
 - `scripts/package_content_v2.py --mode preview`: stage the preview runtime catalog and SHA-256 manifest after the legacy-preview sync.
 - `scripts/package_content_v2.py --mode release`: fail unless **all 142** individually approved, correctly sized 1440x2560 WebP images are present in `assets-v2/approved/webp/`.
 
-Release verification also requires `assets-v2/approved/sha256.json` with one record per file:
+Release verification also requires `assets-v2/approved/sha256.json` with one record per file (completed only after all 142 images pass the second-stage review):
 
 ```json
 {
@@ -60,6 +60,7 @@ Release verification also requires `assets-v2/approved/sha256.json` with one rec
     "status": "approved",
     "sha256": "64-lowercase-hex-characters-of-approved-WebP",
     "original_sha256": "64-lowercase-hex-characters-of-original-source",
+    "original": "amur_tiger-a1b2c3d4e5f6.png",
     "review_notes": "Document actual independent anatomical and visual acceptance"
   }
 }
@@ -67,7 +68,7 @@ Release verification also requires `assets-v2/approved/sha256.json` with one rec
 
 Hashes above are illustrative placeholders, not valid release values. Source originals and their hashes must remain available for audit. **Creating hashes does not constitute visual approval.** Do not mark a card approved until the image has been inspected for species, age, correct limb count, clear silhouette, environment, scale, text artifacts and full-frame composition.
 
-The legacy preview synchronizer is temporarily pinned to exact `miu-piu/kids-games` commit `176e1393e171510849e8cb7d11b22c022e8dd473`; production does not fetch images at build time.
+The temporary preview synchronizer is pinned to exact `miu-piu/kids-games` commit `176e1393e171510849e8cb7d11b22c022e8dd473`; **release** does not fetch images at build time.
 
 ## Tests
 
