@@ -15,6 +15,8 @@ concurrency:
 jobs:
   android-ui:
     runs-on: ubuntu-latest
+    env:
+      ANDROID_I_WANT_MY_TCG: 'yes'
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
@@ -37,6 +39,9 @@ jobs:
           arch: x86_64
           target: google_apis
           profile: pixel_6
+          emulator-boot-timeout: 1200
+          cores: 2
+          ram-size: 2048M
           disable-animations: true
           script: |
             gradle :app:connectedDebugAndroidTest --stacktrace
