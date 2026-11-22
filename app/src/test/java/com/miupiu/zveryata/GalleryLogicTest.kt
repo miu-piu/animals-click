@@ -115,6 +115,34 @@ class GalleryLogicTest {
         assertNull(router.move(1L, -100f, 0f))
     }
 
+    @Test fun headerIsExactly560PhysicalPixelsAtGalaxyQhd() {
+        val density = 3.5f
+        val w = 1440f / density
+        val h = 3120f / density
+        assertEquals(560f, adaptiveHeaderHeightDp(w, h) * density, 0.5f)
+    }
+
+    @Test fun headerIsExactly420PhysicalPixelsAtGalaxyFhd() {
+        val density = 2.625f
+        val w = 1080f / density
+        val h = 2340f / density
+        assertEquals(420f, adaptiveHeaderHeightDp(w, h) * density, 0.5f)
+    }
+
+    @Test fun headerStaysWithinSafeFractionOnNonReferenceScreens() {
+        for ((w, h) in listOf(360f to 800f, 400f to 700f, 600f to 900f, 300f to 600f)) {
+            val band = adaptiveHeaderHeightDp(w, h)
+            assertTrue(band > 0f)
+            assertTrue(band <= h * 0.27f + 0.01f)
+            assertTrue(band >= minOf(104f, h * 0.27f) - 0.01f)
+        }
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun missingScreenSizeIsRejected() {
+        adaptiveHeaderHeightDp(0f, 900f)
+    }
+
     @Test fun automaticAdvanceIsThirtySeconds() {
         assertEquals(30_000L, AUTO_ADVANCE_MS)
     }
