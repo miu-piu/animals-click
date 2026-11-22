@@ -41,7 +41,7 @@ jobs:
       - name: Install image conversion test dependency
         run: python3 -m pip install --disable-pip-version-check Pillow==11.3.0
 
-      - name: Sync approved animal photos and icon
+      - name: Stage pinned legacy preview photos
         run: python3 scripts/sync_assets.py
 
       - name: Stage unified Zveryata 2.0 runtime catalog
@@ -49,17 +49,6 @@ jobs:
 
       - name: Validate Zveryata 2.0 catalog and preview bundle
         run: python3 scripts/validate_catalog_v2.py
-
-      - name: Compile species-specific artwork briefs
-        run: python3 scripts/make_generation_briefs_v2.py
-
-      - name: Upload artwork briefs for production
-        uses: actions/upload-artifact@v4
-        with:
-          name: zveryata-v2-image-briefs
-          path: catalog/generation-briefs-v2.json
-          if-no-files-found: error
-          retention-days: 14
 
       - name: Test content contracts and safe release packaging
         run: python3 -m unittest discover -s tests -p 'test_*v2.py' -v
