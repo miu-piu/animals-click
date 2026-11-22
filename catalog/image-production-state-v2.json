@@ -1,7 +1,6 @@
 {
   "schema_version": "1.0",
   "catalog_source": "catalog/catalog-v2.json",
-  "reset_reason": "User-directed clean restart: discard all previous trial images for Zveryata v2",
   "first_generation_id": "cat",
   "first_generation_ordinal": 2,
   "accepted_generated_images": 0,
