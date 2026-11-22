@@ -21,11 +21,13 @@ class ContentContractTest(unittest.TestCase):
         self.assertEqual(card["generation"], "PRESERVE_REAL_PHOTO")
         self.assertNotIn("prompt", card)
 
-    def test_far_eastern_species_and_ray_have_special_briefs(self):
+    def test_briefs_use_only_catalog_identity_and_shared_standard(self):
         cards = {c["id"]: c for c in briefs()}
-        for name in ("amur_tiger", "amur_leopard", "snow_leopard", "ray"):
-            self.assertIn("COMPOSITION AND POSE", cards[name]["prompt"])
-        self.assertIn("leopard rosettes", cards["amur_leopard"]["prompt"].lower())
+        for name in ("cat", "amur_tiger", "amur_leopard", "ray"):
+            self.assertIn(cards[name]["reference"], cards[name]["prompt"])
+            self.assertIn(cards[name]["stage"], cards[name]["prompt"])
+            self.assertNotIn("scene", cards[name])
+            self.assertNotIn("COMPOSITION AND POSE", cards[name]["prompt"])
         self.assertEqual(cards["ray"]["label"], "скат")
 
     def test_duplicate_ids_and_assets_are_rejected(self):
