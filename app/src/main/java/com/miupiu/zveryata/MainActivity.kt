@@ -206,6 +206,9 @@ private fun AnimalGallery() {
                 var fontSize by remember(caption, headerHeight, screenWidth) {
                     mutableFloatStateOf(32f)
                 }
+                var accessibilityTwoLines by remember(caption, headerHeight, screenWidth) {
+                    mutableStateOf(false)
+                }
                 Text(
                     text = caption,
                     color = CaptionWhite,
@@ -213,11 +216,16 @@ private fun AnimalGallery() {
                     lineHeight = (fontSize * 1.17f).sp,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Center,
-                    maxLines = 2,
-                    softWrap = true,
+                    maxLines = if (accessibilityTwoLines) 2 else 1,
+                    softWrap = accessibilityTwoLines,
                     onTextLayout = { layout ->
-                        if (layout.hasVisualOverflow && fontSize > 18f) {
-                            fontSize = (fontSize - 2f).coerceAtLeast(18f)
+                        if (layout.hasVisualOverflow) {
+                            if (fontSize > 18f) {
+                                fontSize = (fontSize - 2f).coerceAtLeast(18f)
+                            } else if (!accessibilityTwoLines) {
+                                // Two lines are a last-resort fallback for enlarged accessibility fonts.
+                                accessibilityTwoLines = true
+                            }
                         }
                     },
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp).testTag("animalLabel")
