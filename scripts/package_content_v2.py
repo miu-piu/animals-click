@@ -10,9 +10,9 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import os
 from pathlib import Path
 import shutil
+import re
 
 ROOT = Path(__file__).resolve().parents[1]
 APP_ASSETS = ROOT / "app/src/main/assets"
@@ -70,6 +70,24 @@ def validate_image(path: Path, strict_dimensions: bool) -> None:
                 raise ValueError(f"Unsupported colour mode: {path}: {image.mode}")
 
 
+def validate_approvals(records: dict, expected: set[str]) -> dict[str, str]:
+    """A release cannot be made from files with no individual visual review."""
+    if set(records) != expected:
+        raise ValueError("Approved image record list does not match the 142-card catalog")
+    approved_hashes = {}
+    for filename, record in records.items():
+        if not isinstance(record, dict) or record.get("status") != "approved":
+            raise ValueError(f"Image is not individually approved: {filename}")
+        for field in ("sha256", "original_sha256"):
+            value = record.get(field)
+            if not isinstance(value, str) or re.fullmatch("[a-f0-9]{64}", value) is None:
+                raise ValueError(f"Invalid {field}: {filename}")
+        if not isinstance(record.get("review_notes"), str) or not record["review_notes"].strip():
+            raise ValueError(f"Missing visual review notes: {filename}")
+        approved_hashes[filename] = record["sha256"]
+    return approved_hashes
+
+
 def package(mode: str) -> None:
     production = load(PRODUCTION)
     full = production["cards"]
@@ -86,10 +104,9 @@ def package(mode: str) -> None:
         source = APPROVED_IMAGES
         if not APPROVED_HASHES.is_file():
             raise FileNotFoundError("Missing locked production sha256.json")
-        hashes = load(APPROVED_HASHES)
-        expected_keys = {c["asset"] for c in cards}
-        if set(hashes) != expected_keys:
-            raise ValueError("Locked SHA-256 list differs from production catalog")
+        hashes = validate_approvals(
+            load(APPROVED_HASHES), {c["asset"] for c in cards}
+        )
     validate_cards(cards)
 
     expected = {c["asset"] for c in cards}
