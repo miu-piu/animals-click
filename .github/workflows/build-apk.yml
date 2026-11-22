@@ -34,6 +34,13 @@ jobs:
         with:
           gradle-version: '8.9'
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install image conversion test dependency
+        run: python3 -m pip install --disable-pip-version-check Pillow==11.3.0
+
       - name: Sync approved animal photos and icon
         run: python3 scripts/sync_assets.py
 
