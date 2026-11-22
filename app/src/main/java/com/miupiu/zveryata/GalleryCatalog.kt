@@ -10,12 +10,12 @@ internal data class AnimalCard(
 )
 
 /**
- * Temporary image mapping for the first executable 2.0 prototype.
- * The complete, approved 142-card catalog is stored at catalog/catalog-v2.json.
+ * Reads a staged runtime catalog independently of content-mode and image count.
+ * The full 142-card source catalog is stored at catalog/catalog-v2.json.
  * Replace the preview manifest only after the new photos are approved.
  */
-internal fun loadPreviewCards(context: Context): List<AnimalCard> {
-    val json = context.assets.open("catalog-preview.json").bufferedReader(Charsets.UTF_8).use { it.readText() }
+internal fun loadCards(context: Context): List<AnimalCard> {
+    val json = context.assets.open("catalog.json").bufferedReader(Charsets.UTF_8).use { it.readText() }
     val rows = JSONObject(json).getJSONArray("cards")
     val cards = (0 until rows.length()).map { index ->
         val item = rows.getJSONObject(index)
