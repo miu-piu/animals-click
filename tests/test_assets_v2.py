@@ -25,7 +25,7 @@ class ContentContractTest(unittest.TestCase):
         cards = {c["id"]: c for c in briefs()}
         for name in ("amur_tiger", "amur_leopard", "snow_leopard", "ray"):
             self.assertIn("COMPOSITION AND POSE", cards[name]["prompt"])
-        self.assertIn("not jaguar", cards["amur_leopard"]["prompt"].lower())
+        self.assertIn("leopard rosettes", cards["amur_leopard"]["prompt"].lower())
         self.assertEqual(cards["ray"]["label"], "скат")
 
     def test_duplicate_ids_and_assets_are_rejected(self):
