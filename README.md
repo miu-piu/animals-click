@@ -1,92 +1,50 @@
-# Зверята 2.0 — Android (рабочая ветка)
+# Зверята 2.0
 
-**На телефоне:** «Зверята» · **package:** `com.miupiu.zveryata` · **preview version:** 2.0.0-preview.1.
+Нативное офлайн-приложение для Android на **Kotlin + Jetpack Compose**. На телефоне называется **«Зверята»**, package `com.miupiu.zveryata`. Вся разработка 2.0 ведётся в `feature/zveryata-v2`; `main` пока не меняется. Исходники предыдущей версии сохранены в `archive/zveryata-v1-before-v2`.
 
-Новая реализация Kotlin/Jetpack Compose в **том же репозитории**. Старая версия сохранена в `archive/zveryata-v1-before-v2`.
+## Текущий этап — создание оригиналов
 
-## Генерация изображений
+**141 новая фотография** для каталога из **142 карточек**. Первая генерация — №002 `cat` («кошка»); №001 пропускается. Генерировать по одной фотографии на самостоятельный запрос, сохранять оригинал и SHA-256 после каждого результата; после каждых десяти автоматически продолжать без согласования. **Сейчас не делать WebP, обзоры, ZIP и APK.**
 
-Журнал прогресса: `catalog/image-production-state-v2.json`. Карточка №001 `ari` отмечена как `skipped`. **Первая генерация — №002 `cat`**.
+**[Запустить генерацию: мастер-промпт](docs/MASTER-PROMPT-GENERATION-ONLY-v2.md)**
 
-[**Стартовый мастер-промпт — генерация всех 141 оригинала**](docs/MASTER-PROMPT-GENERATION-ONLY-v2.md). **Сейчас только генерация и сохранение отдельных исходников.** Прогресс обновляется после каждого животного; десятки — только внутренние контрольные точки, без согласований, обзоров и ZIP. Конвертация WebP, подробная приёмка, обзорные листы и APK выполняются позже, отдельным этапом.
+Нормативные файлы:
+- [Каталог и порядок 142 карточек](catalog/catalog-v2.json)
+- [15 производственных партий](catalog/batches-v2.json)
+- [Журнал фактического прогресса](catalog/image-production-state-v2.json) — компактный; отсутствие ID в `completed` и `blocked` означает, что он ещё не обработан
+- [Позитивный шаблон одного запроса ImageGen](docs/IMAGEGEN-CLEAN-PROMPT-v2.md)
+- [Видовые подсказки и генератор индивидуальных заданий](scripts/make_generation_briefs_v2.py)
+- [Стандарт содержания и качества изображений](docs/TZ-images-v2.md)
 
-## Зафиксированные ТЗ и продолжение работы
+## Приложение
 
-1. [**Основное ТЗ приложения**](docs/TZ-v2.md) — экран, навигация, Android, тесты, подпись и условия релиза.
-2. [**Отдельное ТЗ изображений**](docs/TZ-images-v2.md) — конкретный визуальный стандарт, генерация строго одной карточки за вызов, брак, обработка и приёмка.
-   - [**Полный производственный регламент — следующий этап**](docs/MASTER-PROMPT-IMAGE-PRODUCTION-v2.md) — последующая приёмка, WebP, архивы и подготовка релиза; **не запускать его вместо текущей генерации оригиналов**.
-   - [**Чистый позитивный шаблон для ImageGen**](docs/IMAGEGEN-CLEAN-PROMPT-v2.md) — только один конкретный вид и одна фотографическая сцена, без описания партий и истории ошибок.
-3. [**Каталог 142 карточек**](catalog/catalog-v2.json) — единственный точный список с ID, названием, видом, возрастом и сценой.
-4. [**15 партий по 10 / 2 карточки**](catalog/batches-v2.json) — производственный порядок, производный от каталога.
-5. `scripts/make_generation_briefs_v2.py` — воспроизводимые индивидуальные задания для 141 новой картинки (Ари исключена).
+**[Полное ТЗ Android-приложения](docs/TZ-v2.md)** — основной источник требований к экрану, свайпам, таймеру, офлайн-работе, памяти, тестам и релизу.
 
-**В новом чате:** открыть [стартовый мастер-промпт генерации](docs/MASTER-PROMPT-GENERATION-ONLY-v2.md), затем указанные в нём каталог, журнал и [позитивный шаблон](docs/IMAGEGEN-CLEAN-PROMPT-v2.md). Создавать **одну отдельную фотографию одного животного за вызов**, сохранять оригинал и SHA-256 и переходить к следующему ID без промежуточных подтверждений. **На текущем этапе не делать WebP, листы или ZIP.**
+- Отдельная чёрная верхняя шапка с русским названием; фото ниже без декоративных рамок.
+- Влево/вверх — следующая, вправо/вниз — предыдущая; тап не переключает.
+- Порог свайпа **56 dp**, преимущество оси **1,6**, независимые пальцы и **3 секунды** между принятыми ручными переходами.
+- Автосмена через **30 секунд**, с паузой в фоне.
+- Временно в preview APK используются **59 фиксированных фотографий** только для тестирования кода. Они не являются финальным контентом из 142 карточек.
+- Текущая иконка хранится в `app/src/main/res/drawable-nodpi/zveryata_icon.png`; не перегенерировать.
 
+## Сборка и проверки preview
 
-## Статус
-
-Android-код находится на стадии **исполняемого прототипа**; runtime preview-каталог содержит 59 временных изображений для проверки экрана, жестов и таймера. Это **не** 142 утверждённых финальных карточки. На текущем этапе создаются исходники 141 новой фотографии по каталогу, и только после их подготовки можно переходить к финальной интеграции.
-
-## Поведение прототипа
-
-- Отдельная адаптивная чёрная шапка с центрированным названием и фото до боковых и нижнего краёв.
-- Влево/вверх — вперёд; вправо/вниз — назад; короткий тап не перелистывает.
-- Порог свайпа 56 dp, уверенное преимущество основной оси; независимое слежение за несколькими пальцами.
-- Глобальный 3-секундный cooldown только для принятых ручных жестов.
-- Автоматический переход раз в 30 секунд, пауза в фоне.
-- Встроенные изображения без интернет-доступа во время работы, ограниченный байтами кеш.
-
-## Сборка
-
-GitHub Actions `.github/workflows/build-apk.yml` пока использует **legacy preview** скрипт синхронизации старых иллюстраций из `miu-piu/kids-games`. Это временный источник тестовых изображений, не архитектура финального выпуска. До выпуска 2.0 изображения должны находиться в собственном репозитории и проверяться по манифесту SHA-256.
-
-Тесты/линт: `gradle :app:testDebugUnitTest :app:lintDebug`. Сборка: `gradle :app:assembleDebug`.
-
-APK с CI debug-подписью не гарантирует обновление поверх ранее установленного debug APK из другой сборочной среды. Перед финальным выпуском нужен стабильный закрытый ключ подписи и проверка установки. 
-
-## Single source of truth and image production
-
-- `catalog/catalog-v2.json`: all 142 approved identities, order, labels, species, life stages and individual habitat notes.
-- `scripts/make_generation_briefs_v2.py`: generate 142 individual image briefs. **141 new images; Ari is preserved, not generated.**
-- `app/src/main/assets/catalog-preview.json`: temporary 59-image comparison set only.
-- `scripts/package_content_v2.py --mode preview`: stage the preview runtime catalog and SHA-256 manifest after the legacy-preview sync.
-- `scripts/package_content_v2.py --mode release`: fail unless **all 142** individually approved, correctly sized 1440x2560 WebP images are present in `assets-v2/approved/webp/`.
-
-Release verification also requires `assets-v2/approved/sha256.json` with one record per file (completed only after all 142 images pass the second-stage review):
-
-```json
-{
-  "amur-tiger.webp": {
-    "status": "approved",
-    "sha256": "64-lowercase-hex-characters-of-approved-WebP",
-    "original_sha256": "64-lowercase-hex-characters-of-original-source",
-    "original": "amur_tiger-a1b2c3d4e5f6.png",
-    "review_notes": "Document actual independent anatomical and visual acceptance"
-  }
-}
+```bash
+python3 scripts/sync_assets.py
+python3 scripts/package_content_v2.py --mode preview
+python3 scripts/validate_catalog_v2.py
+python3 -m unittest discover -s tests -p 'test_*v2.py' -v
+gradle :app:testDebugUnitTest :app:lintDebug :app:assembleDebug
 ```
 
-Hashes above are illustrative placeholders, not valid release values. Source originals and their hashes must remain available for audit. **Creating hashes does not constitute visual approval.** Do not mark a card approved until the image has been inspected for species, age, correct limb count, clear silhouette, environment, scale, text artifacts and full-frame composition.
+Скрипт `sync_assets.py` загружает **только** 59 временных фотографий из закреплённого коммита `miu-piu/kids-games`. Папки старой PWA и загрузки иконок для этого не нужны. GitHub Actions: `.github/workflows/build-apk.yml` и `.github/workflows/android-ui-v2.yml`.
 
-The temporary preview synchronizer is pinned to exact `miu-piu/kids-games` commit `176e1393e171510849e8cb7d11b22c022e8dd473`; **release** does not fetch images at build time.
+## После генерации: приёмка и релиз
 
-## Tests
+1. **[Мастер-промпт этапа 2](docs/MASTER-PROMPT-IMAGE-PRODUCTION-v2.md)** — индивидуальная визуальная проверка, адресные исправления, подготовка RGB WebP 1440×2560, программные обзоры 2×5 и архивы.
+2. Сохранить неизменённые оригиналы в `assets-v2/originals/`, утверждённые WebP — в `assets-v2/approved/webp/`. Манифест `assets-v2/approved/sha256.json` должен содержать **142** записи с действительными хешами исходников и WebP и комментариями визуальной приёмки.
+3. `python3 scripts/package_content_v2.py --mode release` должен успешно подтвердить весь контент без пропусков и подмен.
+4. Подписанный APK собирается вручную через `.github/workflows/release-v2.yml`, при наличии `ZVERYATA_KEYSTORE_B64`, `ZVERYATA_KEYSTORE_PASSWORD`, `ZVERYATA_KEY_ALIAS` и `ZVERYATA_KEY_PASSWORD`. Ключ не хранить в репозитории.
+5. Проверить установку и поведение на реальном телефоне. Для обновления уже установленного приложения нужен **тот же сертификат подписи**; иначе потребуется переустановка.
 
-- `python3 -m unittest discover -s tests -p 'test_*v2.py' -v`: catalog uniqueness, protection against release with unreviewed/invalid assets, and special handling of Ari.
-- `gradle :app:testDebugUnitTest`: direction, axis strength, boundary and multitouch-state rules.
-- `gradle :app:lintDebug`, `gradle :app:assembleDebugAndroidTest`, `gradle :app:assembleDebug`: static analysis and test/binary compilation.
-- `.github/workflows/android-ui-v2.yml`: actual Compose UI tests on Android emulator; captures FHD+/QHD+ emulator screenshots after test runs.
-
-Passing tests in a CI emulator is **not** a substitute for validating real multi-finger usage, Samsung Screen Pinning and installation/signature behavior on the target phone.
-
-## Подпись финальной версии
-
-`.github/workflows/release-v2.yml` — отдельная ручная сборка только после приёмки **всех 142** изображений. Она использует четыре закрытых параметра GitHub Actions: `ZVERYATA_KEYSTORE_B64`, `ZVERYATA_KEYSTORE_PASSWORD`, `ZVERYATA_KEY_ALIAS`, `ZVERYATA_KEY_PASSWORD`. Без них процесс останавливается и не публикует неподписанный APK. Приватный ключ не добавляется в репозиторий.
-
-Совпадение Android package ID `com.miupiu.zveryata` само по себе не позволяет заменить старый APK: нужен **тот же сертификат подписи**, которым была подписана установленная версия. Если прежняя версия подписана другим debug-ключом, требуется переустановка; обойти проверку Android нельзя.
-
-## Файлы источников
-
-`assets-v2/originals/legacy-ari.webp` — побайтно сохранённая историческая карточка Ари из старого исходного набора, SHA-256 `05d8c4828dc9a5c1ff9f8ccd412701e0629cd38bd804d6b80dff3134fc61675e`. Это **сохранённый файл прежней версии**, не доказательство происхождения фотографии. Изображение Ари не генерируется нейросетью в 2.0. Окончательный исходник должен пройти визуальную приёмку на соответствие конкретной собаке.
-
-Иконка `app/src/main/res/drawable-nodpi/zveryata_icon.png` теперь хранится в репозитории; финальная сборка не скачивает её из старой PWA.
+**Никаких заявлений о готовности 142 карточек или финального APK до фактической проверки.**
