@@ -70,3 +70,16 @@ internal class TouchRouter(private val thresholdPx: Float) {
         fingers.clear()
     }
 }
+
+/**
+ * Reserve a caption band without hard-coded screen pixels.
+ * Both dimensions must be measured within the immersive app viewport in dp.
+ * At 1440x3120 and 1080x2340, this reserves exactly 560px and 420px.
+ */
+internal fun adaptiveHeaderHeightDp(widthDp: Float, heightDp: Float): Float {
+    require(widthDp > 0f && heightDp > 0f)
+    val maximum = heightDp * 0.27f
+    val minimum = minOf(104f, maximum)
+    val ideal = heightDp - widthDp * (16f / 9f)
+    return ideal.coerceIn(minimum, maximum)
+}
