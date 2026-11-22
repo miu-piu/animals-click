@@ -50,6 +50,9 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
+      - name: Test content contracts and safe release packaging
+        run: python3 -m unittest discover -s tests -p 'test_*v2.py' -v
+
       - name: Verify exact source asset count
         run: |
           test "$(find app/src/main/assets/images -maxdepth 1 -type f -name '*.webp' | wc -l)" -eq 59
