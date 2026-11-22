@@ -22,6 +22,7 @@ APP_CATALOG = APP_ASSETS / "catalog.json"
 PRODUCTION = ROOT / "catalog/catalog-v2.json"
 APP_MANIFEST = APP_ASSETS / "image-hashes.json"
 APPROVED_IMAGES = ROOT / "assets-v2/approved/webp"
+ORIGINALS = ROOT / "assets-v2/originals"
 APPROVED_HASHES = ROOT / "assets-v2/approved/sha256.json"
 
 
@@ -84,6 +85,16 @@ def validate_approvals(records: dict, expected: set[str]) -> dict[str, str]:
                 raise ValueError(f"Invalid {field}: {filename}")
         if not isinstance(record.get("review_notes"), str) or not record["review_notes"].strip():
             raise ValueError(f"Missing visual review notes: {filename}")
+        original = record.get("original")
+        if not isinstance(original, str) or original != Path(original).name:
+            raise ValueError(f"Missing or unsafe original image filename: {filename}")
+        if not original.lower().endswith((".png", ".jpg", ".jpeg", ".webp")):
+            raise ValueError(f"Unsupported original image type: {original}")
+        original_path = ORIGINALS / original
+        if not original_path.is_file():
+            raise ValueError(f"Missing original source for {filename}: {original}")
+        if sha256(original_path) != record["original_sha256"]:
+            raise ValueError(f"Original source hash mismatch: {filename}")
         approved_hashes[filename] = record["sha256"]
     return approved_hashes
 
@@ -119,15 +130,23 @@ def package(mode: str) -> None:
         )
 
     calculated = {}
+    total_bytes = 0
     for card in cards:
         filename = card["asset"]
         path = source / filename
         validate_image(path, strict_dimensions=(mode == "release"))
+        if mode == "release" and path.stat().st_size > 2_500_000:
+            raise ValueError(f"Excessive image size; optimize WebP: {filename}")
+        total_bytes += path.stat().st_size
         calculated[filename] = sha256(path)
         if hashes is not None and hashes[filename] != calculated[filename]:
             raise ValueError(f"SHA-256 mismatch: {filename}")
 
     if mode == "release":
+        if len(set(calculated.values())) != len(calculated):
+            raise ValueError("Duplicate photograph bytes used under different catalog IDs")
+        if total_bytes > 200 * 1024 * 1024:
+            raise ValueError("Release image collection exceeds 200 MiB")
         APP_IMAGES.mkdir(parents=True, exist_ok=True)
         for existing in APP_IMAGES.glob("*.webp"):
             existing.unlink()
