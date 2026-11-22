@@ -138,6 +138,13 @@ class GalleryLogicTest {
         }
     }
 
+    @Test fun largeAccessibilityFontCanGrowTheHeaderSafely() {
+        val normal = adaptiveHeaderHeightDp(411.43f, 891.43f, 1f)
+        val enlarged = adaptiveHeaderHeightDp(411.43f, 891.43f, 5f)
+        assertTrue(enlarged > normal)
+        assertTrue(enlarged <= 891.43f * 0.35f)
+    }
+
     @Test(expected = IllegalArgumentException::class)
     fun missingScreenSizeIsRejected() {
         adaptiveHeaderHeightDp(0f, 900f)
