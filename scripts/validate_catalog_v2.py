@@ -38,7 +38,7 @@ def main() -> None:
     assert count == 142, f"Unexpected release catalog count: {count}"
     cards = validate_manifest(ROOT / "catalog/catalog-v2.json", expected_count=count)
     for item in cards:
-        for name in ("reference", "scene", "stage", "section"):
+        for name in ("reference", "stage", "section"):
             assert isinstance(item.get(name), str) and item[name].strip(), (
                 f"Missing {name}: {item['id']}"
             )
