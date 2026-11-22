@@ -8,6 +8,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: zveryata-ui-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   android-ui:
     runs-on: ubuntu-latest
