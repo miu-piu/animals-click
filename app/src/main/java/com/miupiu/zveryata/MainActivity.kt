@@ -88,7 +88,7 @@ private fun AnimalGallery() {
     val lifecycleOwner = LocalLifecycleOwner.current
     val density = LocalDensity.current
     val swipeThresholdPx = with(density) { SWIPE_THRESHOLD_DP.dp.toPx() }
-    val cards = remember(context) { loadPreviewCards(context) }
+    val cards = remember(context) { loadCards(context) }
     val photoStore = remember(context) { BitmapStore(context.applicationContext) }
 
     var requestedIndex by rememberSaveable { mutableIntStateOf(0) }
