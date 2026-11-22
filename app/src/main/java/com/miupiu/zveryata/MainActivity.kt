@@ -81,7 +81,7 @@ private val labelsByAsset = mapOf(
     "40-swan.webp" to "лебедь", "41-whale.webp" to "кит", "42-shark.webp" to "акула",
     "43-penguin.webp" to "пингвин", "44-seal.webp" to "тюлень", "45-dolphin.webp" to "дельфин",
     "46-octopus.webp" to "осьминог", "47-seahorse.webp" to "морской конёк", "48-crab.webp" to "краб",
-    "49-ray.webp" to "скат", "50-walrus.webp" to "морж", "51-jellyfish.webp" to "медуза",
+    "49-ray.webp" to "хвостокол", "50-walrus.webp" to "морж", "51-jellyfish.webp" to "медуза",
     "52-snake.webp" to "змея", "53-lizard.webp" to "ящерица", "54-butterfly.webp" to "бабочка",
     "55-bee.webp" to "пчела", "56-snail.webp" to "улитка", "57-lemur.webp" to "лемур",
     "58-dragonfly.webp" to "стрекоза", "59-ladybird.webp" to "божья коровка"
@@ -249,7 +249,7 @@ private fun ZveryataGallery() {
             val labelSize = when {
                 screenWidthDp >= 840.dp -> 36.sp
                 screenWidthDp >= 600.dp -> 32.sp
-                else -> 28.sp
+                else -> 32.sp
             }
 
             if (freeHeightDp >= 36.dp && slides.isNotEmpty()) {
