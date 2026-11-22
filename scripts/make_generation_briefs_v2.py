@@ -16,16 +16,16 @@ CATALOG = ROOT / "catalog/catalog-v2.json"
 
 CAMERA = {
     "squirrel": "Entire tail arched visibly away from torso, paws on a simple branch; three-quarter lateral view.",
-    "deer": "Adult stag standing on FOUR visible, naturally straight legs, antlers entirely inside the frame.",
+    "deer": "Adult stag (DEER, not leopard or any feline), standing on FOUR visible, naturally straight legs, antlers entirely inside the frame. Hooves rest on a simple smooth woodland clearing with no detailed leaf litter, gravel, stones or visible moss texture.",
     "fawn": "Young deer STANDING with all FOUR legs extended and separated, not lying or tucked.",
     "moose": "Adult moose standing in clear profile, entire high legs, muzzle and antlers distinct.",
     "horse": "Full adult horse in calm side three-quarter standing pose, long legs and hooves visible.",
     "foal": "Young horse standing on all four long legs, realistic foal body proportions.",
     "amur_tiger": "ADULT Amur/Siberian tiger, heavy winter coat, natural black stripes, complete tail and all paws. Temperate Russian Far Eastern mixed forest, NOT tropical jungle.",
-    "amur_leopard": "ADULT Far Eastern/Amur leopard, pale thick coat and LEOPARD rosettes (not jaguar center-spotted rosettes). Far Eastern temperate forest, entire long tail.",
+    "amur_leopard": "ADULT Far Eastern/Amur leopard, pale thick coat and LEOPARD rosettes (not jaguar center-spotted rosettes). Far Eastern temperate forest expressed through soft out-of-focus broad woodland tones, not a studio backdrop. Complete long tail and all paws. Stand on quiet smooth soil or a nearly textureless natural rock: no busy moss, layered leaves, pebbles or twigs.",
     "snow_leopard": "ADULT snow leopard/irbis with smoky-grey thick spotted fur and an exceptionally long heavy tail, standing on four paws against simple high mountain rock.",
     "peacock": "Adult male displaying one COMPLETE open tail-fan, every edge and feather tip inside the frame, feet visible; camera pulled back as needed.",
-    "ray": "Adult stingray viewed nearly from above in clear shallow blue sea; both full wing-like pectoral fins and whole long tail visible, no horseshoe crab features.",
+    "ray": "Adult stingray viewed nearly from above in natural clear shallow sea; both full wing-like pectoral fins and whole long tail visible, no horseshoe crab features. Calm blue-grey or turquoise water and a smooth understated sandy seabed, no caustic light patterns, dappled highlights, sparkling reflections or textured spots of light on the animal or bottom.",
     "octopus": "Exactly eight anatomically plausible arms separately readable across quiet seafloor, complete mantle.",
     "jellyfish": "Natural translucent bell and every tentacle distinctly visible against uncluttered blue water, no human-like eyes.",
     "snake": "Entire real grass snake in one gently extended S-curve across pale smooth sand or rock, never tightly coiled.",
@@ -45,15 +45,15 @@ CAMERA = {
 GROUP_RULES = {
     "Домашние питомцы": "Home or pet-habitat context; no opaque foreground cage bars or glass. Show all anatomical landmarks against quiet surroundings.",
     "Ферма и деревня": "Familiar quiet farm setting; body at a natural standing side or three-quarter angle; all feet and tail visible.",
-    "Лес и поля": "Quiet woodland habitat in true daylight; branch, stone or clear forest floor, no leaves covering paws or tail.",
-    "Дальний Восток и горы": "Grounded geographic habitat, quiet forest or mountain rock; correct species-specific fur and full silhouette.",
+    "Лес и поля": "Quiet woodland habitat in true daylight, soft distant tree-color masses. Under the animal use smooth uncomplicated forest ground, no sharp leaf litter, twigs, speckled moss, pebbles or textured stones; no foliage covering paws or tail.",
+    "Дальний Восток и горы": "Grounded geographic habitat shown through naturally soft distant forest or mountain color masses. The standing surface is nearly textureless natural soil or smooth rock; avoid patterned moss, small stones, branches and distracting detail. Accurate species-specific fur and complete silhouette.",
     "Африка и саванна": "Authentic open African grassland, safe peaceful pose, no grass concealing legs or hooves.",
     "Австралия": "Authentic Australian open woodland or freshwater habitat, species-specific posture and full body.",
     "Америка": "Authentic South American/natural habitat; full species-specific body and tail.",
     "Арктика и север": "Natural Arctic tundra, snow or sea ice; animal separated tonally from pale background.",
     "Пустыня": "Muted smooth sand or rock substrate to separate complicated form and limbs.",
     "Реки, озёра и болота": "Freshwater green-grey or earthy palette; body contour visible through water or against simple shore.",
-    "Море и океан": "Sea blue/turquoise or deep ocean blue appropriate to depth; clean uncluttered water with fins and tails clear.",
+    "Море и океан": "Sea blue/turquoise or deep ocean blue appropriate to depth, with gentle low-contrast illumination. No high-frequency wave caustics, white sparkles, sun streaks, rippled-floor reflections or glare on the subject; water and seabed form calm simple masses and fins/tails are clear.",
     "Птицы": "Whole bird, beak, feet, wings and tail distinguishable; one simple natural perch or ground.",
     "Насекомые и другие мелкие животные": "Photorealistic macro on smooth leaf, rock, branch or soil; no bright flowers or distracting detailed textures, correct legs and antennae.",
     "Пресмыкающиеся": "True reptile anatomy shown on quiet simple natural rock, sand or branch; no confusing camouflage.",
@@ -65,8 +65,13 @@ COMMON = (
     "inside the image with generous natural environment margin. Adult form by default; if explicitly "
     "a baby animal, use species-correct juvenile proportions. "
     "Premium realistic wildlife/pet photography, natural light, correct anatomy, "
-    "calm expression and accurate pigmentation. The animal must be sharp and separated "
-    "from softer, geographically appropriate habitat. Do not add the black caption header; "
+    "calm expression and accurate pigmentation. The animal must be the unmistakable "
+    "visual focal point, sharp and high-contrast against a believable but deliberately "
+    "quiet habitat: one or two large soft background color masses, no small competing details. "
+    "The surface directly beneath paws, hooves or fins must be natural, visually simple, "
+    "smooth and low-contrast, not a decorated pedestal. In water, no caustic light ribbons "
+    "or bright specular highlights on sand or animal. Keep real habitat context, not a "
+    "uniform studio backdrop. Do not add the black caption header; "
     "the Android app places its own text outside the image. "
     "No people, extra animals, toy look, illustration, CGI, Disney/anime, unnatural baby eyes, "
     "human smiles, wrong limbs or fingers, clipped tails or paws, injury, aggression, logos, "
