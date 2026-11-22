@@ -67,6 +67,54 @@ class GalleryLogicTest {
         wrapIndex(0, 1, 0)
     }
 
+
+    @Test fun stationaryFingerDoesNotBlockSecondFingerSwipe() {
+        val router = TouchRouter(56f)
+        router.press(1L, 80f, 100f, beganBlocked = false)
+        router.press(2L, 200f, 200f, beganBlocked = false)
+        assertNull(router.move(1L, 82f, 101f))
+        assertEquals(1, router.move(2L, 100f, 200f))
+        assertNull(router.move(2L, 30f, 200f))
+        router.release(1L)
+        router.release(2L)
+    }
+
+    @Test fun gestureStartedDuringCooldownCannotTriggerAfterExpiry() {
+        val router = TouchRouter(56f)
+        router.press(8L, 300f, 300f, beganBlocked = true)
+        assertNull(router.move(8L, 100f, 300f))
+        assertNull(router.move(8L, 10f, 300f))
+        router.release(8L)
+        router.press(8L, 300f, 300f, beganBlocked = false)
+        assertEquals(1, router.move(8L, 100f, 300f))
+    }
+
+    @Test fun touchRouterIgnoresJitterTapAndDiagonal() {
+        val router = TouchRouter(56f)
+        router.press(4L, 100f, 100f, beganBlocked = false)
+        assertNull(router.move(4L, 101f, 100f))
+        assertNull(router.move(4L, 145f, 140f))
+        router.release(4L)
+        assertNull(router.move(4L, 100f, -200f))
+    }
+
+    @Test fun concurrentPointersCannotGenerateDuplicatesPerGesture() {
+        val router = TouchRouter(56f)
+        router.press(1L, 10f, 10f, beganBlocked = false)
+        router.press(2L, 10f, 10f, beganBlocked = false)
+        assertEquals(-1, router.move(1L, 80f, 10f))
+        assertNull(router.move(1L, 200f, 10f))
+        assertEquals(1, router.move(2L, 10f, -80f))
+        // Final mutual exclusion is implemented by requestMove's global pending/cooldown.
+    }
+
+    @Test fun touchRouterCanClearCancelledContacts() {
+        val router = TouchRouter(56f)
+        router.press(1L, 0f, 0f, beganBlocked = false)
+        router.clear()
+        assertNull(router.move(1L, -100f, 0f))
+    }
+
     @Test fun automaticAdvanceIsThirtySeconds() {
         assertEquals(30_000L, AUTO_ADVANCE_MS)
     }
