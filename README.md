@@ -24,3 +24,37 @@ GitHub Actions `.github/workflows/build-apk.yml` пока использует *
 Тесты/линт: `gradle :app:testDebugUnitTest :app:lintDebug`. Сборка: `gradle :app:assembleDebug`.
 
 APK с CI debug-подписью не гарантирует обновление поверх ранее установленного debug APK из другой сборочной среды. Перед финальным выпуском нужен стабильный закрытый ключ подписи и проверка установки. 
+
+## Single source of truth and image production
+
+- `catalog/catalog-v2.json`: all 142 approved identities, order, labels, species, life stages and individual habitat notes.
+- `scripts/make_generation_briefs_v2.py`: generate 142 individual image briefs. **141 new images; Ari is preserved, not generated.**
+- `app/src/main/assets/catalog-preview.json`: temporary 59-image comparison set only.
+- `scripts/package_content_v2.py --mode preview`: stage the preview runtime catalog and SHA-256 manifest after the legacy-preview sync.
+- `scripts/package_content_v2.py --mode release`: fail unless **all 142** individually approved, correctly sized 1440x2560 WebP images are present in `assets-v2/approved/webp/`.
+
+Release verification also requires `assets-v2/approved/sha256.json` with one record per file:
+
+```json
+{
+  "amur-tiger.webp": {
+    "status": "approved",
+    "sha256": "64-lowercase-hex-characters-of-approved-WebP",
+    "original_sha256": "64-lowercase-hex-characters-of-original-source",
+    "review_notes": "Document actual independent anatomical and visual acceptance"
+  }
+}
+```
+
+Hashes above are illustrative placeholders, not valid release values. Source originals and their hashes must remain available for audit. **Creating hashes does not constitute visual approval.** Do not mark a card approved until the image has been inspected for species, age, correct limb count, clear silhouette, environment, scale, text artifacts and full-frame composition.
+
+The legacy preview synchronizer is temporarily pinned to exact `miu-piu/kids-games` commit `176e1393e171510849e8cb7d11b22c022e8dd473`; production does not fetch images at build time.
+
+## Tests
+
+- `python3 -m unittest discover -s tests -p 'test_*v2.py' -v`: catalog uniqueness, protection against release with unreviewed/invalid assets, and special handling of Ari.
+- `gradle :app:testDebugUnitTest`: direction, axis strength, boundary and multitouch-state rules.
+- `gradle :app:lintDebug`, `gradle :app:assembleDebugAndroidTest`, `gradle :app:assembleDebug`: static analysis and test/binary compilation.
+- `.github/workflows/android-ui-v2.yml`: actual Compose UI tests on Android emulator; captures FHD+/QHD+ emulator screenshots after test runs.
+
+Passing tests in a CI emulator is **not** a substitute for validating real multi-finger usage, Samsung Screen Pinning and installation/signature behavior on the target phone.
