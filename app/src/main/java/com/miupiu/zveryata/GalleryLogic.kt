@@ -76,10 +76,15 @@ internal class TouchRouter(private val thresholdPx: Float) {
  * Both dimensions must be measured within the immersive app viewport in dp.
  * At 1440x3120 and 1080x2340, this reserves exactly 560px and 420px.
  */
-internal fun adaptiveHeaderHeightDp(widthDp: Float, heightDp: Float): Float {
-    require(widthDp > 0f && heightDp > 0f)
-    val maximum = heightDp * 0.27f
-    val minimum = minOf(104f, maximum)
+internal fun adaptiveHeaderHeightDp(
+    widthDp: Float, heightDp: Float, fontScale: Float = 1f
+): Float {
+    require(widthDp > 0f && heightDp > 0f && fontScale > 0f)
+    val preferredMaximum = heightDp * 0.27f
+    val minimum = minOf(104f, preferredMaximum)
     val ideal = heightDp - widthDp * (16f / 9f)
-    return ideal.coerceIn(minimum, maximum)
+    val defaultBand = ideal.coerceIn(minimum, preferredMaximum)
+    // A two-line fallback at 18sp must still fit at accessibility font scales.
+    val accessibilityFloor = 2f * 18f * 1.17f * fontScale + 24f
+    return maxOf(defaultBand, accessibilityFloor).coerceAtMost(heightDp * 0.35f)
 }
