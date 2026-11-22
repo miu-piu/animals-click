@@ -1,8 +1,6 @@
 package com.miupiu.zveryata
 
-import androidx.compose.ui.test.assertExists
 import androidx.compose.ui.test.assertTextEquals
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
@@ -11,7 +9,6 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.click
 import androidx.compose.ui.test.swipeLeft
 import androidx.compose.ui.test.swipeUp
-import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
