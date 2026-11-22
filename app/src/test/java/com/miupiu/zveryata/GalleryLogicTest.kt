@@ -33,6 +33,18 @@ class GalleryLogicTest {
     }
 
     @Test
+    fun wrapsBackwardAndRejectsEmptyGallery() {
+        assertEquals(58, wrapIndex(current = 0, delta = -1, size = 59))
+        assertEquals(0, wrapIndex(current = 0, delta = 59, size = 59))
+        try {
+            wrapIndex(current = 0, delta = 1, size = 0)
+            throw AssertionError("Expected IllegalArgumentException")
+        } catch (_: IllegalArgumentException) {
+            // Empty galleries must not be navigated.
+        }
+    }
+
+    @Test
     fun repeatedNavigationRemainsInRange() {
         var index = 0
         repeat(10_000) { index = wrapIndex(index, 1, 59) }
