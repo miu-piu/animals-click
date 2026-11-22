@@ -1,5 +1,7 @@
 """Contract tests for 2.0 catalog, image briefs and packaging safeguards."""
 import tempfile
+import hashlib
+from unittest.mock import patch
 import unittest
 from pathlib import Path
 
@@ -44,21 +46,29 @@ class ContentContractTest(unittest.TestCase):
             validate_cards([{"id": "bad", "label": "кот", "asset": "cat.png"}])
 
     def test_release_requires_individual_approval_and_locked_source(self):
-        digest = "a" * 64
-        valid = {"cat.webp": {
-            "status": "approved", "sha256": digest,
-            "original_sha256": "b" * 64,
-            "review_notes": "Full visible paws; calm domestic interior; checked anatomy."
-        }}
-        self.assertEqual(validate_approvals(valid, {"cat.webp"}), {"cat.webp": digest})
-        invalid = {"cat.webp": {**valid["cat.webp"], "status": "pending"}}
-        with self.assertRaises(ValueError):
-            validate_approvals(invalid, {"cat.webp"})
-        invalid = {"cat.webp": {**valid["cat.webp"], "review_notes": ""}}
-        with self.assertRaises(ValueError):
-            validate_approvals(invalid, {"cat.webp"})
-        with self.assertRaises(ValueError):
-            validate_approvals(valid, {"cat.webp", "dog.webp"})
+        with tempfile.TemporaryDirectory() as directory:
+            original = Path(directory) / "cat.png"
+            original.write_bytes(b"original source image bytes")
+            source_digest = hashlib.sha256(original.read_bytes()).hexdigest()
+            valid = {"cat.webp": {
+                "status": "approved",
+                "sha256": "a" * 64,
+                "original": "cat.png",
+                "original_sha256": source_digest,
+                "review_notes": "Full visible paws; calm domestic interior; checked anatomy.",
+            }}
+            with patch("scripts.package_content_v2.ORIGINALS", Path(directory)):
+                self.assertEqual(validate_approvals(valid, {"cat.webp"}), {"cat.webp": "a" * 64})
+                with self.assertRaises(ValueError):
+                    validate_approvals({"cat.webp": {**valid["cat.webp"], "status": "pending"}}, {"cat.webp"})
+                with self.assertRaises(ValueError):
+                    validate_approvals({"cat.webp": {**valid["cat.webp"], "review_notes": ""}}, {"cat.webp"})
+                with self.assertRaises(ValueError):
+                    validate_approvals({"cat.webp": {**valid["cat.webp"], "original": "missing.png"}}, {"cat.webp"})
+                with self.assertRaises(ValueError):
+                    validate_approvals({"cat.webp": {**valid["cat.webp"], "original_sha256": "b" * 64}}, {"cat.webp"})
+                with self.assertRaises(ValueError):
+                    validate_approvals(valid, {"cat.webp", "dog.webp"})
 
     def test_non_webp_binary_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
