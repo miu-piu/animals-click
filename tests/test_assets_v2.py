@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.package_content_v2 import validate_cards, validate_image
+from scripts.package_content_v2 import validate_cards, validate_image, validate_approvals
 from scripts.make_generation_briefs_v2 import briefs
 
 
@@ -42,6 +42,23 @@ class ContentContractTest(unittest.TestCase):
             validate_cards([{"id": "bad", "label": "кот", "asset": "../cat.webp"}])
         with self.assertRaises(ValueError):
             validate_cards([{"id": "bad", "label": "кот", "asset": "cat.png"}])
+
+    def test_release_requires_individual_approval_and_locked_source(self):
+        digest = "a" * 64
+        valid = {"cat.webp": {
+            "status": "approved", "sha256": digest,
+            "original_sha256": "b" * 64,
+            "review_notes": "Full visible paws; calm domestic interior; checked anatomy."
+        }}
+        self.assertEqual(validate_approvals(valid, {"cat.webp"}), {"cat.webp": digest})
+        invalid = {"cat.webp": {**valid["cat.webp"], "status": "pending"}}
+        with self.assertRaises(ValueError):
+            validate_approvals(invalid, {"cat.webp"})
+        invalid = {"cat.webp": {**valid["cat.webp"], "review_notes": ""}}
+        with self.assertRaises(ValueError):
+            validate_approvals(invalid, {"cat.webp"})
+        with self.assertRaises(ValueError):
+            validate_approvals(valid, {"cat.webp", "dog.webp"})
 
     def test_non_webp_binary_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
