@@ -55,6 +55,9 @@ jobs:
       - name: Run Android lint
         run: gradle :app:lintDebug --stacktrace
 
+      - name: Compile Android UI instrumentation tests
+        run: gradle :app:assembleDebugAndroidTest --stacktrace
+
       - name: Build debug APK
         run: gradle :app:assembleDebug --stacktrace
 
