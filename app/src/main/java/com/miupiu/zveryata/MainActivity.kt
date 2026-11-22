@@ -32,15 +32,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.input.pointer.PointerId
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -56,12 +56,6 @@ import kotlinx.coroutines.launch
 
 private val Ink = Color.Black
 private val CaptionWhite = Color(0xFFF2F2F2)
-
-private class TouchTrack(
-    val start: Offset,
-    val beganBlocked: Boolean,
-    var handled: Boolean = false
-)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,6 +93,7 @@ private fun AnimalGallery() {
 
     var requestedIndex by rememberSaveable { mutableIntStateOf(0) }
     var shownIndex by remember { mutableIntStateOf(0) }
+    var completedTransitions by remember { mutableIntStateOf(0) }
     var visibleImage by remember { mutableStateOf<Bitmap?>(null) }
     var photoWidth by remember { mutableIntStateOf(0) }
     var photoHeight by remember { mutableIntStateOf(0) }
@@ -142,8 +137,10 @@ private fun AnimalGallery() {
         if (photoWidth <= 0 || photoHeight <= 0) return@LaunchedEffect
         try {
             val next = photoStore.load(cards[requestedIndex].asset, photoWidth, photoHeight)
+            val actuallyChanged = visibleImage == null || shownIndex != requestedIndex
             visibleImage = next
             shownIndex = requestedIndex
+            if (actuallyChanged) completedTransitions++
             transitionPending = false
             if (cards.size > 1) {
                 launch { runCatching {
@@ -160,7 +157,7 @@ private fun AnimalGallery() {
     }
 
     // Only a completed transition or lifecycle return restarts the 30-second clock.
-    LaunchedEffect(shownIndex, isForeground, transitionPending, visibleImage) {
+    LaunchedEffect(completedTransitions, isForeground, transitionPending) {
         if (isForeground && visibleImage != null && !transitionPending && cards.size > 1) {
             delay(AUTO_ADVANCE_MS)
             requestMove(1, manual = false)
@@ -168,9 +165,9 @@ private fun AnimalGallery() {
     }
 
     BoxWithConstraints(
-        modifier = Modifier.fillMaxSize().background(Ink)
+        modifier = Modifier.fillMaxSize().background(Ink).testTag("animalGallery")
             .pointerInput(swipeThresholdPx) {
-                val fingers = mutableMapOf<PointerId, TouchTrack>()
+                val router = TouchRouter(swipeThresholdPx)
                 awaitPointerEventScope {
                     while (true) {
                         val event = awaitPointerEvent()
@@ -181,23 +178,15 @@ private fun AnimalGallery() {
                                         SystemClock.elapsedRealtime(),
                                         lastManualState.value
                                     ) || pendingState.value
-                                fingers[change.id] = TouchTrack(change.position, beganBlocked)
+                                router.press(change.id.value, change.position.x, change.position.y, beganBlocked)
                             }
-                            val finger = fingers[change.id]
-                            if (finger != null && !finger.handled &&
-                                (change.pressed || change.previousPressed)) {
-                                val displacement = change.position - finger.start
-                                val step = swipeDelta(
-                                    displacement.x, displacement.y, swipeThresholdPx
+                            if (change.pressed || change.previousPressed) {
+                                val step = router.move(
+                                    change.id.value, change.position.x, change.position.y
                                 )
-                                if (step != null) {
-                                    finger.handled = true
-                                    if (!finger.beganBlocked && swipeHandler.value(step)) {
-                                        change.consume()
-                                    }
-                                }
+                                if (step != null && swipeHandler.value(step)) change.consume()
                             }
-                            if (!change.pressed) fingers.remove(change.id)
+                            if (!change.pressed) router.release(change.id.value)
                         }
                     }
                 }
@@ -212,7 +201,7 @@ private fun AnimalGallery() {
         val screenWidth = maxWidth
         Column(Modifier.fillMaxSize()) {
             Box(
-                modifier = Modifier.fillMaxWidth().height(headerHeight).background(Ink),
+                modifier = Modifier.fillMaxWidth().height(headerHeight).background(Ink).testTag("captionHeader"),
                 contentAlignment = Alignment.Center
             ) {
                 val caption = cards[shownIndex].label
@@ -233,13 +222,13 @@ private fun AnimalGallery() {
                             fontSize = (fontSize - 2f).coerceAtLeast(18f)
                         }
                     },
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp).testTag("animalLabel")
                 )
             }
 
             Box(
                 modifier = Modifier.fillMaxWidth().weight(1f).background(Ink)
-                    .onSizeChanged { size ->
+                    .testTag("photoRegion").onSizeChanged { size ->
                         photoWidth = size.width
                         photoHeight = size.height
                     },
@@ -252,13 +241,13 @@ private fun AnimalGallery() {
                     Image(
                         bitmap = image.asImageBitmap(),
                         contentDescription = null,
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier.fillMaxSize().blur(24.dp),
                         contentScale = ContentScale.Crop
                     )
                     Image(
                         bitmap = image.asImageBitmap(),
                         contentDescription = cards[shownIndex].label,
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier.fillMaxSize().testTag("animalImage"),
                         contentScale = ContentScale.Fit
                     )
                 }
