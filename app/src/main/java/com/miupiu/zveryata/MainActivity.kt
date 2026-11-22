@@ -1,20 +1,21 @@
 package com.miupiu.zveryata
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.ImageDecoder
-import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
-import android.util.LruCache
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.weight
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.darkColorScheme
@@ -22,11 +23,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -36,11 +38,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.input.pointer.PointerId
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.consume
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
@@ -49,42 +53,16 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
-import kotlinx.coroutines.withContext
-import kotlin.math.max
-import kotlin.math.min
-import kotlin.math.roundToInt
+import kotlinx.coroutines.launch
 
-private val AppBlack = Color.Black
-private val LabelColor = Color(0xFFF2F2F2)
+private val Ink = Color.Black
+private val CaptionWhite = Color(0xFFF2F2F2)
 
-private data class Slide(val assetName: String, val label: String)
-private data class PointerTrack(val start: Offset, var triggered: Boolean = false)
-
-private val labelsByAsset = mapOf(
-    "01-arich.webp" to "Ари", "02-kitten.webp" to "котёнок", "03-irish-setter.webp" to "собака",
-    "04-rabbit.webp" to "кролик", "05-calf.webp" to "телёнок", "06-goat.webp" to "коза",
-    "07-lamb.webp" to "ягнёнок", "08-chick.webp" to "цыплёнок", "09-duckling.webp" to "утёнок",
-    "10-hedgehog.webp" to "ёж", "11-squirrel.webp" to "белка", "12-ferret.webp" to "хорёк",
-    "13-fox.webp" to "лиса", "14-raccoon.webp" to "енот", "15-fawn.webp" to "оленёнок",
-    "16-bear.webp" to "медведь", "17-lynx.webp" to "рысь", "18-chipmunk.webp" to "бурундук",
-    "19-amur-leopard.webp" to "леопард", "20-tiger.webp" to "тигр", "21-lion.webp" to "лев",
-    "22-elephant.webp" to "слон", "23-giraffe.webp" to "жираф", "24-zebra.webp" to "зебра",
-    "25-camel.webp" to "верблюд", "26-capybara.webp" to "капибара", "27-alpaca.webp" to "альпака",
-    "28-panda.webp" to "панда", "29-hippo.webp" to "бегемот", "30-rhino.webp" to "носорог",
-    "31-tit.webp" to "синица", "32-owl.webp" to "сова", "33-crow.webp" to "ворона",
-    "34-magpie.webp" to "сорока", "35-pigeon.webp" to "голубь", "36-flamingo.webp" to "фламинго",
-    "37-hummingbird.webp" to "колибри", "38-cuckoo.webp" to "кукушка", "39-peacock.webp" to "павлин",
-    "40-swan.webp" to "лебедь", "41-whale.webp" to "кит", "42-shark.webp" to "акула",
-    "43-penguin.webp" to "пингвин", "44-seal.webp" to "тюлень", "45-dolphin.webp" to "дельфин",
-    "46-octopus.webp" to "осьминог", "47-seahorse.webp" to "морской конёк", "48-crab.webp" to "краб",
-    "49-ray.webp" to "хвостокол", "50-walrus.webp" to "морж", "51-jellyfish.webp" to "медуза",
-    "52-snake.webp" to "змея", "53-lizard.webp" to "ящерица", "54-butterfly.webp" to "бабочка",
-    "55-bee.webp" to "пчела", "56-snail.webp" to "улитка", "57-lemur.webp" to "лемур",
-    "58-dragonfly.webp" to "стрекоза", "59-ladybird.webp" to "божья коровка"
+private class TouchTrack(
+    val start: Offset,
+    val beganBlocked: Boolean,
+    var handled: Boolean = false
 )
 
 class MainActivity : ComponentActivity() {
@@ -93,8 +71,8 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         hideSystemBars()
         setContent {
-            MaterialTheme(colorScheme = darkColorScheme(background = AppBlack, surface = AppBlack)) {
-                ZveryataGallery()
+            MaterialTheme(colorScheme = darkColorScheme(background = Ink, surface = Ink)) {
+                AnimalGallery()
             }
         }
     }
@@ -113,30 +91,24 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-private fun ZveryataGallery() {
+private fun AnimalGallery() {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val density = LocalDensity.current
     val swipeThresholdPx = with(density) { SWIPE_THRESHOLD_DP.dp.toPx() }
-    val tapSlopPx = with(density) { TAP_SLOP_DP.dp.toPx() }
-    val displayMetrics = context.resources.displayMetrics
-    val targetWidthPx = displayMetrics.widthPixels.coerceAtLeast(1)
-    val targetHeightPx = displayMetrics.heightPixels.coerceAtLeast(1)
-    val decodeMutex = remember { Mutex() }
-    val bitmapCache = remember { LruCache<String, Bitmap>(3) }
+    val cards = remember(context) { loadPreviewCards(context) }
+    val photoStore = remember(context) { BitmapStore(context.applicationContext) }
 
-    val slides = remember {
-        context.assets.list("images")?.asSequence()
-            ?.filter { it.endsWith(".webp", ignoreCase = true) }
-            ?.sorted()
-            ?.map { Slide(it, labelsByAsset[it] ?: it.substringAfter('-').substringBeforeLast('.')) }
-            ?.toList().orEmpty()
+    var requestedIndex by rememberSaveable { mutableIntStateOf(0) }
+    var shownIndex by remember { mutableIntStateOf(0) }
+    var visibleImage by remember { mutableStateOf<Bitmap?>(null) }
+    var photoWidth by remember { mutableIntStateOf(0) }
+    var photoHeight by remember { mutableIntStateOf(0) }
+    var transitionPending by remember { mutableStateOf(false) }
+    var lastManualAt by remember { mutableLongStateOf(-1L) }
+    var isForeground by remember {
+        mutableStateOf(lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED))
     }
-
-    var currentIndex by rememberSaveable { mutableIntStateOf(0) }
-    var timerGeneration by remember { mutableIntStateOf(0) }
-    var lastManualChangeAt by remember { mutableLongStateOf(-1L) }
-    var isForeground by remember { mutableStateOf(true) }
 
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
@@ -150,160 +122,148 @@ private fun ZveryataGallery() {
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
 
-    fun nextSlide() {
-        if (slides.isEmpty()) return
-        currentIndex = wrapIndex(currentIndex, 1, slides.size)
-        timerGeneration++
-    }
-
-    fun tryManualNext(): Boolean {
+    fun requestMove(delta: Int, manual: Boolean): Boolean {
+        if (!isForeground || transitionPending || cards.isEmpty()) return false
         val now = SystemClock.elapsedRealtime()
-        if (slides.isEmpty() || !manualNavigationAllowed(now, lastManualChangeAt)) return false
-        lastManualChangeAt = now
-        nextSlide()
+        if (manual && !manualNavigationAllowed(now, lastManualAt)) return false
+        if (manual) lastManualAt = now
+        transitionPending = true
+        requestedIndex = wrapIndex(shownIndex, delta, cards.size)
         return true
     }
 
-    LaunchedEffect(timerGeneration, isForeground, slides.size) {
-        if (isForeground && slides.isNotEmpty()) {
-            delay(AUTO_ADVANCE_MS)
-            nextSlide()
-        }
+    val swipeHandler = rememberUpdatedState<(Int) -> Boolean> { step ->
+        requestMove(step, manual = true)
     }
+    val lastManualState = rememberUpdatedState(lastManualAt)
+    val pendingState = rememberUpdatedState(transitionPending)
+    val foregroundState = rememberUpdatedState(isForeground)
 
-    // Keep a small decoded-image cache and preload adjacent slides off the UI thread.
-    val bitmap by produceState<Bitmap?>(null, currentIndex, slides, targetWidthPx, targetHeightPx) {
-        if (slides.isEmpty()) {
-            value = null
-            return@produceState
-        }
-
-        suspend fun load(index: Int): Bitmap {
-            val name = slides[index].assetName
-            bitmapCache.get(name)?.let { return it }
-            return withContext(Dispatchers.IO) {
-                decodeMutex.withLock {
-                    bitmapCache.get(name) ?: decodeBitmapForScreen(
-                        context, "images/$name", targetWidthPx, targetHeightPx
-                    ).also { bitmapCache.put(name, it) }
-                }
+    // Keep the old image visible until the next bitmap has been decoded.
+    LaunchedEffect(requestedIndex, photoWidth, photoHeight) {
+        if (photoWidth <= 0 || photoHeight <= 0) return@LaunchedEffect
+        try {
+            val next = photoStore.load(cards[requestedIndex].asset, photoWidth, photoHeight)
+            visibleImage = next
+            shownIndex = requestedIndex
+            transitionPending = false
+            if (cards.size > 1) {
+                launch { runCatching {
+                    photoStore.load(cards[wrapIndex(shownIndex, 1, cards.size)].asset, photoWidth, photoHeight)
+                } }
+                launch { runCatching {
+                    photoStore.load(cards[wrapIndex(shownIndex, -1, cards.size)].asset, photoWidth, photoHeight)
+                } }
             }
-        }
-
-        value = load(currentIndex)
-        if (slides.size > 1) {
-            load(wrapIndex(currentIndex, 1, slides.size))
-            load(wrapIndex(currentIndex, -1, slides.size))
+        } catch (error: Exception) {
+            Log.e("Zveryata", "Failed to decode slide", error)
+            transitionPending = false
         }
     }
 
-    Box(
-        modifier = Modifier.fillMaxSize().background(AppBlack)
-            .pointerInput(slides.size, swipeThresholdPx, tapSlopPx) {
-                val pointers = mutableMapOf<PointerId, PointerTrack>()
+    // Only a completed transition or lifecycle return restarts the 30-second clock.
+    LaunchedEffect(shownIndex, isForeground, transitionPending, visibleImage) {
+        if (isForeground && visibleImage != null && !transitionPending && cards.size > 1) {
+            delay(AUTO_ADVANCE_MS)
+            requestMove(1, manual = false)
+        }
+    }
+
+    BoxWithConstraints(
+        modifier = Modifier.fillMaxSize().background(Ink)
+            .pointerInput(swipeThresholdPx) {
+                val fingers = mutableMapOf<PointerId, TouchTrack>()
                 awaitPointerEventScope {
                     while (true) {
                         val event = awaitPointerEvent()
-                        event.changes.forEach { change ->
+                        for (change in event.changes) {
                             if (!change.previousPressed && change.pressed) {
-                                pointers[change.id] = PointerTrack(change.position)
+                                val beganBlocked = !foregroundState.value ||
+                                    !manualNavigationAllowed(
+                                        SystemClock.elapsedRealtime(),
+                                        lastManualState.value
+                                    ) || pendingState.value
+                                fingers[change.id] = TouchTrack(change.position, beganBlocked)
                             }
-                            val track = pointers[change.id]
-                            if (track != null && change.pressed && !track.triggered) {
-                                val delta = change.position - track.start
-                                if (movementExceedsThreshold(delta.x, delta.y, swipeThresholdPx)) {
-                                    track.triggered = true
-                                    tryManualNext()
-                                    change.consume()
-                                }
-                            }
-                            if (change.previousPressed && !change.pressed) {
-                                if (track != null && !track.triggered) {
-                                    val delta = change.position - track.start
-                                    if (isTapMovement(delta.x, delta.y, tapSlopPx)) {
-                                        track.triggered = true
-                                        tryManualNext()
+                            val finger = fingers[change.id]
+                            if (finger != null && !finger.handled &&
+                                (change.pressed || change.previousPressed)) {
+                                val displacement = change.position - finger.start
+                                val step = swipeDelta(
+                                    displacement.x, displacement.y, swipeThresholdPx
+                                )
+                                if (step != null) {
+                                    finger.handled = true
+                                    if (!finger.beganBlocked && swipeHandler.value(step)) {
                                         change.consume()
                                     }
                                 }
-                                pointers.remove(change.id)
                             }
+                            if (!change.pressed) fingers.remove(change.id)
                         }
                     }
                 }
             }
     ) {
-        bitmap?.let { image ->
-            Image(
-                bitmap = image.asImageBitmap(), contentDescription = null,
-                modifier = Modifier.fillMaxSize(), alignment = Alignment.BottomCenter,
-                contentScale = ContentScale.Fit
-            )
+        // On Galaxy S26 Ultra QHD+, available screen height minus 9:16 picture = 560 px.
+        // For any other aspect ratio, keep the caption centered and let the image area adapt.
+        val naturalHeader = maxHeight - maxWidth * (16f / 9f)
+        val headerHeight = naturalHeader.coerceAtLeast(104.dp)
+            .coerceAtMost(maxHeight * 0.27f)
 
-            val renderedHeightPx = min(
-                targetHeightPx.toFloat(),
-                targetWidthPx.toFloat() * image.height / image.width.coerceAtLeast(1).toFloat()
-            )
-            val freeHeightDp = with(density) { (targetHeightPx - renderedHeightPx).coerceAtLeast(0f).toDp() }
-            val screenWidthDp = with(density) { targetWidthPx.toDp() }
-            val labelSize = when {
-                screenWidthDp >= 840.dp -> 36.sp
-                screenWidthDp >= 600.dp -> 32.sp
-                else -> 32.sp
+        Column(Modifier.fillMaxSize()) {
+            Box(
+                modifier = Modifier.fillMaxWidth().height(headerHeight).background(Ink),
+                contentAlignment = Alignment.Center
+            ) {
+                val caption = cards[shownIndex].label
+                var fontSize by remember(caption, headerHeight, maxWidth) {
+                    mutableFloatStateOf(32f)
+                }
+                Text(
+                    text = caption,
+                    color = CaptionWhite,
+                    fontSize = fontSize.sp,
+                    lineHeight = (fontSize * 1.17f).sp,
+                    fontWeight = FontWeight.Medium,
+                    textAlign = TextAlign.Center,
+                    maxLines = 2,
+                    softWrap = true,
+                    onTextLayout = { layout ->
+                        if (layout.hasVisualOverflow && fontSize > 18f) {
+                            fontSize = (fontSize - 2f).coerceAtLeast(18f)
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)
+                )
             }
 
-            if (freeHeightDp >= 36.dp && slides.isNotEmpty()) {
-                Box(
-                    modifier = Modifier.fillMaxWidth().height(freeHeightDp).align(Alignment.TopCenter),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = slides[currentIndex].label,
-                        color = LabelColor,
-                        fontSize = labelSize,
-                        fontFamily = FontFamily.SansSerif,
-                        fontWeight = FontWeight.Medium,
-                        maxLines = 1
+            Box(
+                modifier = Modifier.fillMaxWidth().weight(1f).background(Ink)
+                    .onSizeChanged { size ->
+                        photoWidth = size.width
+                        photoHeight = size.height
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                val image = visibleImage
+                if (image != null) {
+                    // An enlarged natural backdrop fills unusual aspect ratios;
+                    // the sharp fitted image preserves the entire animal silhouette.
+                    Image(
+                        bitmap = image.asImageBitmap(),
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                    Image(
+                        bitmap = image.asImageBitmap(),
+                        contentDescription = cards[shownIndex].label,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Fit
                     )
                 }
             }
         }
     }
-}
-
-private fun decodeBitmapForScreen(
-    context: android.content.Context,
-    assetPath: String,
-    reqWidth: Int,
-    reqHeight: Int
-): Bitmap {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-        val source = ImageDecoder.createSource(context.assets, assetPath)
-        return ImageDecoder.decodeBitmap(source) { decoder, info, _ ->
-            val sourceWidth = info.size.width.coerceAtLeast(1)
-            val sourceHeight = info.size.height.coerceAtLeast(1)
-            val scale = min(reqWidth.toFloat() / sourceWidth, reqHeight.toFloat() / sourceHeight).coerceAtMost(1f)
-            decoder.setTargetSize(max(1, (sourceWidth * scale).roundToInt()), max(1, (sourceHeight * scale).roundToInt()))
-            decoder.allocator = ImageDecoder.ALLOCATOR_SOFTWARE
-        }
-    }
-
-    val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
-    context.assets.open(assetPath).use { stream -> BitmapFactory.decodeStream(stream, null, bounds) }
-    var sampleSize = 1
-    while (bounds.outWidth / (sampleSize * 2) >= reqWidth && bounds.outHeight / (sampleSize * 2) >= reqHeight) sampleSize *= 2
-
-    val options = BitmapFactory.Options().apply {
-        inSampleSize = sampleSize
-        inPreferredConfig = Bitmap.Config.ARGB_8888
-    }
-    val decoded = context.assets.open(assetPath).use { stream ->
-        BitmapFactory.decodeStream(stream, null, options) ?: error("Could not decode $assetPath")
-    }
-    val scale = min(reqWidth.toFloat() / decoded.width.coerceAtLeast(1), reqHeight.toFloat() / decoded.height.coerceAtLeast(1)).coerceAtMost(1f)
-    if (scale >= 0.999f) return decoded
-
-    val scaled = Bitmap.createScaledBitmap(decoded, max(1, (decoded.width * scale).roundToInt()), max(1, (decoded.height * scale).roundToInt()), true)
-    if (scaled !== decoded) decoded.recycle()
-    return scaled
 }
