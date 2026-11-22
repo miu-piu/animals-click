@@ -14,7 +14,8 @@ import urllib.request
 
 OWNER = "miu-piu"
 REPO = "kids-games"
-BRANCH = "main"
+# Pinned immutable commit: legacy photos are used ONLY in preview mode.
+BRANCH = "176e1393e171510849e8cb7d11b22c022e8dd473"
 BASE_RAW = f"https://raw.githubusercontent.com/{OWNER}/{REPO}/{BRANCH}/animals-click"
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 REFERENCE = ROOT / "reference"
