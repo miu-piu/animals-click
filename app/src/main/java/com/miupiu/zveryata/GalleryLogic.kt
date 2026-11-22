@@ -36,3 +36,37 @@ internal fun gestureCanNavigate(
     lastAcceptedAtMs: Long,
     transitionInProgress: Boolean
 ): Boolean = !beganBlocked && !transitionInProgress && manualNavigationAllowed(nowMs, lastAcceptedAtMs)
+
+/**
+ * Pure touch-state tracker. Each pointer is independent, so a stationary finger
+ * cannot prevent another finger from swiping. A movement may emit at most once.
+ */
+internal class TouchRouter(private val thresholdPx: Float) {
+    private data class Start(
+        val x: Float,
+        val y: Float,
+        val blocked: Boolean,
+        var finished: Boolean = false
+    )
+    private val fingers = mutableMapOf<Long, Start>()
+
+    fun press(pointer: Long, x: Float, y: Float, beganBlocked: Boolean) {
+        fingers[pointer] = Start(x, y, beganBlocked)
+    }
+
+    fun move(pointer: Long, x: Float, y: Float): Int? {
+        val start = fingers[pointer] ?: return null
+        if (start.finished) return null
+        val direction = swipeDelta(x - start.x, y - start.y, thresholdPx) ?: return null
+        start.finished = true
+        return if (start.blocked) null else direction
+    }
+
+    fun release(pointer: Long) {
+        fingers.remove(pointer)
+    }
+
+    fun clear() {
+        fingers.clear()
+    }
+}
