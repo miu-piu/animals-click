@@ -92,6 +92,8 @@ private fun AnimalGallery() {
     val photoStore = remember(context) { BitmapStore(context.applicationContext) }
 
     var requestedIndex by rememberSaveable { mutableIntStateOf(0) }
+    // Re-issue even an identical target after a previous load failure.
+    var requestGeneration by remember { mutableIntStateOf(0) }
     var shownIndex by remember { mutableIntStateOf(0) }
     var completedTransitions by remember { mutableIntStateOf(0) }
     var visibleImage by remember { mutableStateOf<Bitmap?>(null) }
@@ -116,12 +118,13 @@ private fun AnimalGallery() {
     }
 
     fun requestMove(delta: Int, manual: Boolean): Boolean {
-        if (!isForeground || transitionPending || cards.isEmpty()) return false
+        if (!isForeground || transitionPending || cards.size < 2) return false
         val now = SystemClock.elapsedRealtime()
         if (manual && !manualNavigationAllowed(now, lastManualAt)) return false
         if (manual) lastManualAt = now
         transitionPending = true
         requestedIndex = wrapIndex(shownIndex, delta, cards.size)
+        requestGeneration++
         return true
     }
 
@@ -133,7 +136,7 @@ private fun AnimalGallery() {
     val foregroundState = rememberUpdatedState(isForeground)
 
     // Keep the old image visible until the next bitmap has been decoded.
-    LaunchedEffect(requestedIndex, photoWidth, photoHeight) {
+    LaunchedEffect(requestedIndex, requestGeneration, photoWidth, photoHeight) {
         if (photoWidth <= 0 || photoHeight <= 0) return@LaunchedEffect
         try {
             val next = photoStore.load(cards[requestedIndex].asset, photoWidth, photoHeight)
