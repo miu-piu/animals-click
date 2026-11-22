@@ -1,0 +1,1150 @@
+{
+  "schema_version": "2.0.0",
+  "app": "Зверята 2.0",
+  "language": "ru",
+  "asset_size": {
+    "width_px": 1440,
+    "height_px": 2560,
+    "format": "WebP"
+  },
+  "catalog_count": 142,
+  "display_order": "array_order",
+  "cards": [
+    {
+      "id": "ari",
+      "label": "Ари",
+      "reference": "собака, китайская хохлатая пуховка",
+      "stage": "личная",
+      "section": "Домашние питомцы",
+      "asset": "ari.webp"
+    },
+    {
+      "id": "cat",
+      "label": "кошка",
+      "reference": "взрослая домашняя кошка",
+      "stage": "взрослая форма",
+      "section": "Домашние питомцы",
+      "asset": "cat.webp"
+    },
+    {
+      "id": "kitten",
+      "label": "котёнок",
+      "reference": "домашний котёнок",
+      "stage": "детёныш",
+      "section": "Домашние питомцы",
+      "asset": "kitten.webp"
+    },
+    {
+      "id": "dog",
+      "label": "собака",
+      "reference": "взрослая собака, ирландский красный сеттер",
+      "stage": "взрослая форма",
+      "section": "Домашние питомцы",
+      "asset": "dog.webp"
+    },
+    {
+      "id": "puppy",
+      "label": "щенок",
+      "reference": "щенок ирландского красного сеттера",
+      "stage": "детёныш",
+      "section": "Домашние питомцы",
+      "asset": "puppy.webp"
+    },
+    {
+      "id": "rabbit",
+      "label": "кролик",
+      "reference": "взрослый домашний кролик",
+      "stage": "взрослая форма",
+      "section": "Домашние питомцы",
+      "asset": "rabbit.webp"
+    },
+    {
+      "id": "hamster",
+      "label": "хомяк",
+      "reference": "домашний хомяк",
+      "stage": "взрослая форма",
+      "section": "Домашние питомцы",
+      "asset": "hamster.webp"
+    },
+    {
+      "id": "guinea_pig",
+      "label": "морская свинка",
+      "reference": "взрослая морская свинка",
+      "stage": "взрослая форма",
+      "section": "Домашние питомцы",
+      "asset": "guinea_pig.webp"
+    },
+    {
+      "id": "pet_rat",
+      "label": "крыса",
+      "reference": "домашняя декоративная крыса",
+      "stage": "взрослая форма",
+      "section": "Домашние питомцы",
+      "asset": "pet_rat.webp"
+    },
+    {
+      "id": "budgerigar",
+      "label": "попугай",
+      "reference": "волнистый попугайчик",
+      "stage": "взрослая форма",
+      "section": "Домашние питомцы",
+      "asset": "budgerigar.webp"
+    },
+    {
+      "id": "goldfish",
+      "label": "золотая рыбка",
+      "reference": "взрослая золотая рыбка",
+      "stage": "взрослая форма",
+      "section": "Домашние питомцы",
+      "asset": "goldfish.webp"
+    },
+    {
+      "id": "tortoise",
+      "label": "черепаха",
+      "reference": "сухопутная черепаха",
+      "stage": "взрослая форма",
+      "section": "Домашние питомцы",
+      "asset": "tortoise.webp"
+    },
+    {
+      "id": "cow",
+      "label": "корова",
+      "reference": "взрослая домашняя корова",
+      "stage": "взрослая форма",
+      "section": "Ферма и деревня",
+      "asset": "cow.webp"
+    },
+    {
+      "id": "bull",
+      "label": "бык",
+      "reference": "взрослый домашний бык",
+      "stage": "взрослая форма",
+      "section": "Ферма и деревня",
+      "asset": "bull.webp"
+    },
+    {
+      "id": "calf",
+      "label": "телёнок",
+      "reference": "теленок домашней коровы",
+      "stage": "детёныш",
+      "section": "Ферма и деревня",
+      "asset": "calf.webp"
+    },
+    {
+      "id": "horse",
+      "label": "лошадь",
+      "reference": "взрослая лошадь",
+      "stage": "взрослая форма",
+      "section": "Ферма и деревня",
+      "asset": "horse.webp"
+    },
+    {
+      "id": "foal",
+      "label": "жеребёнок",
+      "reference": "жеребёнок лошади",
+      "stage": "детёныш",
+      "section": "Ферма и деревня",
+      "asset": "foal.webp"
+    },
+    {
+      "id": "donkey",
+      "label": "осёл",
+      "reference": "взрослый домашний осёл",
+      "stage": "взрослая форма",
+      "section": "Ферма и деревня",
+      "asset": "donkey.webp"
+    },
+    {
+      "id": "pig",
+      "label": "свинья",
+      "reference": "взрослая домашняя свинья",
+      "stage": "взрослая форма",
+      "section": "Ферма и деревня",
+      "asset": "pig.webp"
+    },
+    {
+      "id": "piglet",
+      "label": "поросёнок",
+      "reference": "молодой домашний поросёнок",
+      "stage": "детёныш",
+      "section": "Ферма и деревня",
+      "asset": "piglet.webp"
+    },
+    {
+      "id": "goat",
+      "label": "коза",
+      "reference": "взрослая домашняя коза",
+      "stage": "взрослая форма",
+      "section": "Ферма и деревня",
+      "asset": "goat.webp"
+    },
+    {
+      "id": "goat_kid",
+      "label": "козлёнок",
+      "reference": "козлёнок домашней козы",
+      "stage": "детёныш",
+      "section": "Ферма и деревня",
+      "asset": "goat_kid.webp"
+    },
+    {
+      "id": "sheep",
+      "label": "овца",
+      "reference": "взрослая домашняя овца",
+      "stage": "взрослая форма",
+      "section": "Ферма и деревня",
+      "asset": "sheep.webp"
+    },
+    {
+      "id": "ram",
+      "label": "баран",
+      "reference": "взрослый домашний баран",
+      "stage": "взрослая форма",
+      "section": "Ферма и деревня",
+      "asset": "ram.webp"
+    },
+    {
+      "id": "lamb",
+      "label": "ягнёнок",
+      "reference": "ягнёнок домашней овцы",
+      "stage": "детёныш",
+      "section": "Ферма и деревня",
+      "asset": "lamb.webp"
+    },
+    {
+      "id": "hen",
+      "label": "курица",
+      "reference": "взрослая домашняя курица",
+      "stage": "взрослая форма",
+      "section": "Ферма и деревня",
+      "asset": "hen.webp"
+    },
+    {
+      "id": "rooster",
+      "label": "петух",
+      "reference": "взрослый домашний петух",
+      "stage": "взрослая форма",
+      "section": "Ферма и деревня",
+      "asset": "rooster.webp"
+    },
+    {
+      "id": "chick",
+      "label": "цыплёнок",
+      "reference": "домашний цыплёнок",
+      "stage": "детёныш",
+      "section": "Ферма и деревня",
+      "asset": "chick.webp"
+    },
+    {
+      "id": "duck",
+      "label": "утка",
+      "reference": "взрослая домашняя утка",
+      "stage": "взрослая форма",
+      "section": "Ферма и деревня",
+      "asset": "duck.webp"
+    },
+    {
+      "id": "duckling",
+      "label": "утёнок",
+      "reference": "утёнок домашней утки",
+      "stage": "детёныш",
+      "section": "Ферма и деревня",
+      "asset": "duckling.webp"
+    },
+    {
+      "id": "goose",
+      "label": "гусь",
+      "reference": "взрослый домашний гусь",
+      "stage": "взрослая форма",
+      "section": "Ферма и деревня",
+      "asset": "goose.webp"
+    },
+    {
+      "id": "gosling",
+      "label": "гусёнок",
+      "reference": "молодой гусь",
+      "stage": "детёныш",
+      "section": "Ферма и деревня",
+      "asset": "gosling.webp"
+    },
+    {
+      "id": "turkey",
+      "label": "индюк",
+      "reference": "взрослый домашний индюк",
+      "stage": "взрослая форма",
+      "section": "Ферма и деревня",
+      "asset": "turkey.webp"
+    },
+    {
+      "id": "fox",
+      "label": "лиса",
+      "reference": "взрослая обыкновенная рыжая лисица",
+      "stage": "взрослая форма",
+      "section": "Лес и поля",
+      "asset": "fox.webp"
+    },
+    {
+      "id": "wolf",
+      "label": "волк",
+      "reference": "взрослый серый волк",
+      "stage": "взрослая форма",
+      "section": "Лес и поля",
+      "asset": "wolf.webp"
+    },
+    {
+      "id": "brown_bear",
+      "label": "медведь",
+      "reference": "взрослый бурый медведь",
+      "stage": "взрослая форма",
+      "section": "Лес и поля",
+      "asset": "brown_bear.webp"
+    },
+    {
+      "id": "hare",
+      "label": "заяц",
+      "reference": "взрослый заяц-русак",
+      "stage": "взрослая форма",
+      "section": "Лес и поля",
+      "asset": "hare.webp"
+    },
+    {
+      "id": "squirrel",
+      "label": "белка",
+      "reference": "обыкновенная рыжая белка",
+      "stage": "взрослая форма",
+      "section": "Лес и поля",
+      "asset": "squirrel.webp"
+    },
+    {
+      "id": "hedgehog",
+      "label": "ёж",
+      "reference": "обыкновенный ёж",
+      "stage": "взрослая форма",
+      "section": "Лес и поля",
+      "asset": "hedgehog.webp"
+    },
+    {
+      "id": "deer",
+      "label": "олень",
+      "reference": "взрослый благородный олень",
+      "stage": "взрослая форма",
+      "section": "Лес и поля",
+      "asset": "deer.webp"
+    },
+    {
+      "id": "fawn",
+      "label": "оленёнок",
+      "reference": "молодой благородный олень",
+      "stage": "детёныш",
+      "section": "Лес и поля",
+      "asset": "fawn.webp"
+    },
+    {
+      "id": "moose",
+      "label": "лось",
+      "reference": "взрослый лось",
+      "stage": "взрослая форма",
+      "section": "Лес и поля",
+      "asset": "moose.webp"
+    },
+    {
+      "id": "wild_boar",
+      "label": "кабан",
+      "reference": "взрослый дикий кабан",
+      "stage": "взрослая форма",
+      "section": "Лес и поля",
+      "asset": "wild_boar.webp"
+    },
+    {
+      "id": "lynx",
+      "label": "рысь",
+      "reference": "взрослая евразийская рысь",
+      "stage": "взрослая форма",
+      "section": "Лес и поля",
+      "asset": "lynx.webp"
+    },
+    {
+      "id": "raccoon",
+      "label": "енот",
+      "reference": "взрослый енот-полоскун",
+      "stage": "взрослая форма",
+      "section": "Лес и поля",
+      "asset": "raccoon.webp"
+    },
+    {
+      "id": "badger",
+      "label": "барсук",
+      "reference": "взрослый европейский барсук",
+      "stage": "взрослая форма",
+      "section": "Лес и поля",
+      "asset": "badger.webp"
+    },
+    {
+      "id": "beaver",
+      "label": "бобр",
+      "reference": "взрослый речной бобр",
+      "stage": "взрослая форма",
+      "section": "Лес и поля",
+      "asset": "beaver.webp"
+    },
+    {
+      "id": "otter",
+      "label": "выдра",
+      "reference": "взрослая речная выдра",
+      "stage": "взрослая форма",
+      "section": "Лес и поля",
+      "asset": "otter.webp"
+    },
+    {
+      "id": "ferret",
+      "label": "хорёк",
+      "reference": "взрослый лесной хорёк",
+      "stage": "взрослая форма",
+      "section": "Лес и поля",
+      "asset": "ferret.webp"
+    },
+    {
+      "id": "chipmunk",
+      "label": "бурундук",
+      "reference": "взрослый сибирский бурундук",
+      "stage": "взрослая форма",
+      "section": "Лес и поля",
+      "asset": "chipmunk.webp"
+    },
+    {
+      "id": "mole",
+      "label": "крот",
+      "reference": "европейский крот",
+      "stage": "взрослая форма",
+      "section": "Лес и поля",
+      "asset": "mole.webp"
+    },
+    {
+      "id": "mouse",
+      "label": "мышь",
+      "reference": "обыкновенная полевая мышь",
+      "stage": "взрослая форма",
+      "section": "Лес и поля",
+      "asset": "mouse.webp"
+    },
+    {
+      "id": "amur_tiger",
+      "label": "тигр",
+      "reference": "взрослый амурский тигр",
+      "stage": "взрослая форма",
+      "section": "Дальний Восток и горы",
+      "asset": "amur_tiger.webp"
+    },
+    {
+      "id": "amur_leopard",
+      "label": "леопард",
+      "reference": "взрослый дальневосточный леопард",
+      "stage": "взрослая форма",
+      "section": "Дальний Восток и горы",
+      "asset": "amur_leopard.webp"
+    },
+    {
+      "id": "snow_leopard",
+      "label": "снежный барс",
+      "reference": "взрослый снежный барс, ирбис",
+      "stage": "взрослая форма",
+      "section": "Дальний Восток и горы",
+      "asset": "snow_leopard.webp"
+    },
+    {
+      "id": "giant_panda",
+      "label": "панда",
+      "reference": "взрослая большая панда",
+      "stage": "взрослая форма",
+      "section": "Дальний Восток и горы",
+      "asset": "giant_panda.webp"
+    },
+    {
+      "id": "red_panda",
+      "label": "красная панда",
+      "reference": "взрослая малая панда",
+      "stage": "взрослая форма",
+      "section": "Дальний Восток и горы",
+      "asset": "red_panda.webp"
+    },
+    {
+      "id": "yak",
+      "label": "як",
+      "reference": "взрослый домашний як",
+      "stage": "взрослая форма",
+      "section": "Дальний Восток и горы",
+      "asset": "yak.webp"
+    },
+    {
+      "id": "lion",
+      "label": "лев",
+      "reference": "взрослый лев с естественной гривой",
+      "stage": "взрослая форма",
+      "section": "Африка и саванна",
+      "asset": "lion.webp"
+    },
+    {
+      "id": "lioness",
+      "label": "львица",
+      "reference": "взрослая львица",
+      "stage": "взрослая форма",
+      "section": "Африка и саванна",
+      "asset": "lioness.webp"
+    },
+    {
+      "id": "elephant",
+      "label": "слон",
+      "reference": "взрослый африканский слон",
+      "stage": "взрослая форма",
+      "section": "Африка и саванна",
+      "asset": "elephant.webp"
+    },
+    {
+      "id": "giraffe",
+      "label": "жираф",
+      "reference": "взрослый жираф",
+      "stage": "взрослая форма",
+      "section": "Африка и саванна",
+      "asset": "giraffe.webp"
+    },
+    {
+      "id": "zebra",
+      "label": "зебра",
+      "reference": "взрослая равнинная зебра",
+      "stage": "взрослая форма",
+      "section": "Африка и саванна",
+      "asset": "zebra.webp"
+    },
+    {
+      "id": "rhinoceros",
+      "label": "носорог",
+      "reference": "взрослый белый носорог",
+      "stage": "взрослая форма",
+      "section": "Африка и саванна",
+      "asset": "rhinoceros.webp"
+    },
+    {
+      "id": "hippopotamus",
+      "label": "бегемот",
+      "reference": "взрослый гиппопотам",
+      "stage": "взрослая форма",
+      "section": "Африка и саванна",
+      "asset": "hippopotamus.webp"
+    },
+    {
+      "id": "monkey",
+      "label": "обезьяна",
+      "reference": "взрослая мартышка",
+      "stage": "взрослая форма",
+      "section": "Африка и саванна",
+      "asset": "monkey.webp"
+    },
+    {
+      "id": "gorilla",
+      "label": "горилла",
+      "reference": "взрослая горилла",
+      "stage": "взрослая форма",
+      "section": "Африка и саванна",
+      "asset": "gorilla.webp"
+    },
+    {
+      "id": "cheetah",
+      "label": "гепард",
+      "reference": "взрослый гепард",
+      "stage": "взрослая форма",
+      "section": "Африка и саванна",
+      "asset": "cheetah.webp"
+    },
+    {
+      "id": "hyena",
+      "label": "гиена",
+      "reference": "взрослая пятнистая гиена",
+      "stage": "взрослая форма",
+      "section": "Африка и саванна",
+      "asset": "hyena.webp"
+    },
+    {
+      "id": "ostrich",
+      "label": "страус",
+      "reference": "взрослый африканский страус",
+      "stage": "взрослая форма",
+      "section": "Африка и саванна",
+      "asset": "ostrich.webp"
+    },
+    {
+      "id": "meerkat",
+      "label": "сурикат",
+      "reference": "взрослый сурикат",
+      "stage": "взрослая форма",
+      "section": "Африка и саванна",
+      "asset": "meerkat.webp"
+    },
+    {
+      "id": "lemur",
+      "label": "лемур",
+      "reference": "взрослый кошачий лемур",
+      "stage": "взрослая форма",
+      "section": "Африка и саванна",
+      "asset": "lemur.webp"
+    },
+    {
+      "id": "porcupine",
+      "label": "дикобраз",
+      "reference": "взрослый африканский дикобраз",
+      "stage": "взрослая форма",
+      "section": "Африка и саванна",
+      "asset": "porcupine.webp"
+    },
+    {
+      "id": "kangaroo",
+      "label": "кенгуру",
+      "reference": "взрослый рыжий кенгуру",
+      "stage": "взрослая форма",
+      "section": "Австралия",
+      "asset": "kangaroo.webp"
+    },
+    {
+      "id": "koala",
+      "label": "коала",
+      "reference": "взрослая коала",
+      "stage": "взрослая форма",
+      "section": "Австралия",
+      "asset": "koala.webp"
+    },
+    {
+      "id": "wombat",
+      "label": "вомбат",
+      "reference": "взрослый вомбат",
+      "stage": "взрослая форма",
+      "section": "Австралия",
+      "asset": "wombat.webp"
+    },
+    {
+      "id": "platypus",
+      "label": "утконос",
+      "reference": "взрослый утконос",
+      "stage": "взрослая форма",
+      "section": "Австралия",
+      "asset": "platypus.webp"
+    },
+    {
+      "id": "emu",
+      "label": "эму",
+      "reference": "взрослый эму",
+      "stage": "взрослая форма",
+      "section": "Австралия",
+      "asset": "emu.webp"
+    },
+    {
+      "id": "capybara",
+      "label": "капибара",
+      "reference": "взрослая капибара",
+      "stage": "взрослая форма",
+      "section": "Америка",
+      "asset": "capybara.webp"
+    },
+    {
+      "id": "sloth",
+      "label": "ленивец",
+      "reference": "взрослый трёхпалый ленивец",
+      "stage": "взрослая форма",
+      "section": "Америка",
+      "asset": "sloth.webp"
+    },
+    {
+      "id": "anteater",
+      "label": "муравьед",
+      "reference": "взрослый гигантский муравьед",
+      "stage": "взрослая форма",
+      "section": "Америка",
+      "asset": "anteater.webp"
+    },
+    {
+      "id": "armadillo",
+      "label": "броненосец",
+      "reference": "взрослый девятипоясный броненосец",
+      "stage": "взрослая форма",
+      "section": "Америка",
+      "asset": "armadillo.webp"
+    },
+    {
+      "id": "alpaca",
+      "label": "альпака",
+      "reference": "взрослая альпака",
+      "stage": "взрослая форма",
+      "section": "Америка",
+      "asset": "alpaca.webp"
+    },
+    {
+      "id": "polar_bear",
+      "label": "белый медведь",
+      "reference": "взрослый белый медведь",
+      "stage": "взрослая форма",
+      "section": "Арктика и север",
+      "asset": "polar_bear.webp"
+    },
+    {
+      "id": "arctic_fox",
+      "label": "песец",
+      "reference": "взрослый песец",
+      "stage": "взрослая форма",
+      "section": "Арктика и север",
+      "asset": "arctic_fox.webp"
+    },
+    {
+      "id": "reindeer",
+      "label": "северный олень",
+      "reference": "взрослый северный олень",
+      "stage": "взрослая форма",
+      "section": "Арктика и север",
+      "asset": "reindeer.webp"
+    },
+    {
+      "id": "camel",
+      "label": "верблюд",
+      "reference": "взрослый двугорбый верблюд",
+      "stage": "взрослая форма",
+      "section": "Пустыня",
+      "asset": "camel.webp"
+    },
+    {
+      "id": "fennec",
+      "label": "фенек",
+      "reference": "взрослый фенек",
+      "stage": "взрослая форма",
+      "section": "Пустыня",
+      "asset": "fennec.webp"
+    },
+    {
+      "id": "jerboa",
+      "label": "тушканчик",
+      "reference": "взрослый тушканчик",
+      "stage": "взрослая форма",
+      "section": "Пустыня",
+      "asset": "jerboa.webp"
+    },
+    {
+      "id": "scorpion",
+      "label": "скорпион",
+      "reference": "взрослый скорпион",
+      "stage": "взрослая форма",
+      "section": "Пустыня",
+      "asset": "scorpion.webp"
+    },
+    {
+      "id": "frog",
+      "label": "лягушка",
+      "reference": "взрослая зелёная лягушка",
+      "stage": "взрослая форма",
+      "section": "Реки, озёра и болота",
+      "asset": "frog.webp"
+    },
+    {
+      "id": "crocodile",
+      "label": "крокодил",
+      "reference": "взрослый нильский крокодил",
+      "stage": "взрослая форма",
+      "section": "Реки, озёра и болота",
+      "asset": "crocodile.webp"
+    },
+    {
+      "id": "pike",
+      "label": "щука",
+      "reference": "взрослая щука",
+      "stage": "взрослая форма",
+      "section": "Реки, озёра и болота",
+      "asset": "pike.webp"
+    },
+    {
+      "id": "catfish",
+      "label": "сом",
+      "reference": "взрослый европейский сом",
+      "stage": "взрослая форма",
+      "section": "Реки, озёра и болота",
+      "asset": "catfish.webp"
+    },
+    {
+      "id": "crayfish",
+      "label": "рак",
+      "reference": "взрослый речной рак",
+      "stage": "взрослая форма",
+      "section": "Реки, озёра и болота",
+      "asset": "crayfish.webp"
+    },
+    {
+      "id": "crucian_carp",
+      "label": "карась",
+      "reference": "взрослый серебряный карась",
+      "stage": "взрослая форма",
+      "section": "Реки, озёра и болота",
+      "asset": "crucian_carp.webp"
+    },
+    {
+      "id": "whale",
+      "label": "кит",
+      "reference": "взрослый горбатый кит",
+      "stage": "взрослая форма",
+      "section": "Море и океан",
+      "asset": "whale.webp"
+    },
+    {
+      "id": "dolphin",
+      "label": "дельфин",
+      "reference": "взрослый дельфин-афалина",
+      "stage": "взрослая форма",
+      "section": "Море и океан",
+      "asset": "dolphin.webp"
+    },
+    {
+      "id": "shark",
+      "label": "акула",
+      "reference": "взрослая акула, белая акула",
+      "stage": "взрослая форма",
+      "section": "Море и океан",
+      "asset": "shark.webp"
+    },
+    {
+      "id": "ray",
+      "label": "скат",
+      "reference": "взрослый скат-хвостокол",
+      "stage": "взрослая форма",
+      "section": "Море и океан",
+      "asset": "ray.webp"
+    },
+    {
+      "id": "walrus",
+      "label": "морж",
+      "reference": "взрослый морж",
+      "stage": "взрослая форма",
+      "section": "Море и океан",
+      "asset": "walrus.webp"
+    },
+    {
+      "id": "seal",
+      "label": "тюлень",
+      "reference": "взрослый обыкновенный тюлень",
+      "stage": "взрослая форма",
+      "section": "Море и океан",
+      "asset": "seal.webp"
+    },
+    {
+      "id": "octopus",
+      "label": "осьминог",
+      "reference": "взрослый осьминог",
+      "stage": "взрослая форма",
+      "section": "Море и океан",
+      "asset": "octopus.webp"
+    },
+    {
+      "id": "jellyfish",
+      "label": "медуза",
+      "reference": "взрослая медуза",
+      "stage": "взрослая форма",
+      "section": "Море и океан",
+      "asset": "jellyfish.webp"
+    },
+    {
+      "id": "crab",
+      "label": "краб",
+      "reference": "взрослый морской краб",
+      "stage": "взрослая форма",
+      "section": "Море и океан",
+      "asset": "crab.webp"
+    },
+    {
+      "id": "starfish",
+      "label": "морская звезда",
+      "reference": "пятилучевая морская звезда",
+      "stage": "взрослая форма",
+      "section": "Море и океан",
+      "asset": "starfish.webp"
+    },
+    {
+      "id": "seahorse",
+      "label": "морской конёк",
+      "reference": "взрослый морской конёк",
+      "stage": "взрослая форма",
+      "section": "Море и океан",
+      "asset": "seahorse.webp"
+    },
+    {
+      "id": "sea_turtle",
+      "label": "морская черепаха",
+      "reference": "взрослая зелёная морская черепаха",
+      "stage": "взрослая форма",
+      "section": "Море и океан",
+      "asset": "sea_turtle.webp"
+    },
+    {
+      "id": "clownfish",
+      "label": "рыба-клоун",
+      "reference": "взрослая рыба-клоун",
+      "stage": "взрослая форма",
+      "section": "Море и океан",
+      "asset": "clownfish.webp"
+    },
+    {
+      "id": "sparrow",
+      "label": "воробей",
+      "reference": "взрослый домовый воробей",
+      "stage": "взрослая форма",
+      "section": "Птицы",
+      "asset": "sparrow.webp"
+    },
+    {
+      "id": "pigeon",
+      "label": "голубь",
+      "reference": "взрослый сизый голубь",
+      "stage": "взрослая форма",
+      "section": "Птицы",
+      "asset": "pigeon.webp"
+    },
+    {
+      "id": "crow",
+      "label": "ворона",
+      "reference": "взрослая серая ворона",
+      "stage": "взрослая форма",
+      "section": "Птицы",
+      "asset": "crow.webp"
+    },
+    {
+      "id": "magpie",
+      "label": "сорока",
+      "reference": "взрослая сорока",
+      "stage": "взрослая форма",
+      "section": "Птицы",
+      "asset": "magpie.webp"
+    },
+    {
+      "id": "owl",
+      "label": "сова",
+      "reference": "взрослая неясыть",
+      "stage": "взрослая форма",
+      "section": "Птицы",
+      "asset": "owl.webp"
+    },
+    {
+      "id": "eagle",
+      "label": "орёл",
+      "reference": "взрослый беркут",
+      "stage": "взрослая форма",
+      "section": "Птицы",
+      "asset": "eagle.webp"
+    },
+    {
+      "id": "stork",
+      "label": "аист",
+      "reference": "взрослый белый аист",
+      "stage": "взрослая форма",
+      "section": "Птицы",
+      "asset": "stork.webp"
+    },
+    {
+      "id": "woodpecker",
+      "label": "дятел",
+      "reference": "взрослый большой пёстрый дятел",
+      "stage": "взрослая форма",
+      "section": "Птицы",
+      "asset": "woodpecker.webp"
+    },
+    {
+      "id": "cuckoo",
+      "label": "кукушка",
+      "reference": "взрослая обыкновенная кукушка",
+      "stage": "взрослая форма",
+      "section": "Птицы",
+      "asset": "cuckoo.webp"
+    },
+    {
+      "id": "peacock",
+      "label": "павлин",
+      "reference": "взрослый самец павлина",
+      "stage": "взрослая форма",
+      "section": "Птицы",
+      "asset": "peacock.webp"
+    },
+    {
+      "id": "flamingo",
+      "label": "фламинго",
+      "reference": "взрослый розовый фламинго",
+      "stage": "взрослая форма",
+      "section": "Птицы",
+      "asset": "flamingo.webp"
+    },
+    {
+      "id": "hummingbird",
+      "label": "колибри",
+      "reference": "взрослый колибри",
+      "stage": "взрослая форма",
+      "section": "Птицы",
+      "asset": "hummingbird.webp"
+    },
+    {
+      "id": "penguin",
+      "label": "пингвин",
+      "reference": "взрослый императорский пингвин",
+      "stage": "взрослая форма",
+      "section": "Птицы",
+      "asset": "penguin.webp"
+    },
+    {
+      "id": "great_tit",
+      "label": "синица",
+      "reference": "взрослая большая синица",
+      "stage": "взрослая форма",
+      "section": "Птицы",
+      "asset": "great_tit.webp"
+    },
+    {
+      "id": "swallow",
+      "label": "ласточка",
+      "reference": "взрослая деревенская ласточка",
+      "stage": "взрослая форма",
+      "section": "Птицы",
+      "asset": "swallow.webp"
+    },
+    {
+      "id": "seagull",
+      "label": "чайка",
+      "reference": "взрослая серебристая чайка",
+      "stage": "взрослая форма",
+      "section": "Птицы",
+      "asset": "seagull.webp"
+    },
+    {
+      "id": "bullfinch",
+      "label": "снегирь",
+      "reference": "взрослый самец снегиря",
+      "stage": "взрослая форма",
+      "section": "Птицы",
+      "asset": "bullfinch.webp"
+    },
+    {
+      "id": "butterfly",
+      "label": "бабочка",
+      "reference": "взрослая дневная бабочка, махаон",
+      "stage": "взрослая форма",
+      "section": "Насекомые и другие мелкие животные",
+      "asset": "butterfly.webp"
+    },
+    {
+      "id": "bee",
+      "label": "пчела",
+      "reference": "взрослая медоносная пчела",
+      "stage": "взрослая форма",
+      "section": "Насекомые и другие мелкие животные",
+      "asset": "bee.webp"
+    },
+    {
+      "id": "ant",
+      "label": "муравей",
+      "reference": "взрослый лесной муравей",
+      "stage": "взрослая форма",
+      "section": "Насекомые и другие мелкие животные",
+      "asset": "ant.webp"
+    },
+    {
+      "id": "ladybird",
+      "label": "божья коровка",
+      "reference": "взрослая семиточечная божья коровка",
+      "stage": "взрослая форма",
+      "section": "Насекомые и другие мелкие животные",
+      "asset": "ladybird.webp"
+    },
+    {
+      "id": "dragonfly",
+      "label": "стрекоза",
+      "reference": "взрослая стрекоза",
+      "stage": "взрослая форма",
+      "section": "Насекомые и другие мелкие животные",
+      "asset": "dragonfly.webp"
+    },
+    {
+      "id": "beetle",
+      "label": "жук",
+      "reference": "взрослый жук-олень",
+      "stage": "взрослая форма",
+      "section": "Насекомые и другие мелкие животные",
+      "asset": "beetle.webp"
+    },
+    {
+      "id": "grasshopper",
+      "label": "кузнечик",
+      "reference": "взрослый зелёный кузнечик",
+      "stage": "взрослая форма",
+      "section": "Насекомые и другие мелкие животные",
+      "asset": "grasshopper.webp"
+    },
+    {
+      "id": "snail",
+      "label": "улитка",
+      "reference": "взрослая виноградная улитка",
+      "stage": "взрослая форма",
+      "section": "Насекомые и другие мелкие животные",
+      "asset": "snail.webp"
+    },
+    {
+      "id": "spider",
+      "label": "паук",
+      "reference": "взрослый паук-крестовик",
+      "stage": "взрослая форма",
+      "section": "Насекомые и другие мелкие животные",
+      "asset": "spider.webp"
+    },
+    {
+      "id": "fly",
+      "label": "муха",
+      "reference": "взрослая комнатная муха",
+      "stage": "взрослая форма",
+      "section": "Насекомые и другие мелкие животные",
+      "asset": "fly.webp"
+    },
+    {
+      "id": "mosquito",
+      "label": "комар",
+      "reference": "взрослый комар",
+      "stage": "взрослая форма",
+      "section": "Насекомые и другие мелкие животные",
+      "asset": "mosquito.webp"
+    },
+    {
+      "id": "caterpillar",
+      "label": "гусеница",
+      "reference": "гусеница бабочки махаона",
+      "stage": "взрослая форма",
+      "section": "Насекомые и другие мелкие животные",
+      "asset": "caterpillar.webp"
+    },
+    {
+      "id": "earthworm",
+      "label": "дождевой червь",
+      "reference": "взрослый дождевой червь",
+      "stage": "взрослая форма",
+      "section": "Насекомые и другие мелкие животные",
+      "asset": "earthworm.webp"
+    },
+    {
+      "id": "snake",
+      "label": "змея",
+      "reference": "взрослый уж",
+      "stage": "взрослая форма",
+      "section": "Пресмыкающиеся",
+      "asset": "snake.webp"
+    },
+    {
+      "id": "lizard",
+      "label": "ящерица",
+      "reference": "взрослая прыткая ящерица",
+      "stage": "взрослая форма",
+      "section": "Пресмыкающиеся",
+      "asset": "lizard.webp"
+    },
+    {
+      "id": "chameleon",
+      "label": "хамелеон",
+      "reference": "взрослый хамелеон",
+      "stage": "взрослая форма",
+      "section": "Пресмыкающиеся",
+      "asset": "chameleon.webp"
+    }
+  ]
+}

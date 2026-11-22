@@ -1,0 +1,1123 @@
+{
+  "schema_version": "1.0",
+  "catalog_count": 142,
+  "batch_size": 10,
+  "batch_count": 15,
+  "source": "catalog/catalog-v2.json",
+  "batches": [
+    {
+      "batch": 1,
+      "from": 1,
+      "to": 10,
+      "count": 10,
+      "cards": [
+        {
+          "number": 1,
+          "id": "ari",
+          "label": "Ари",
+          "asset": "ari.webp",
+          "method": "PRESERVE_ORIGINAL"
+        },
+        {
+          "number": 2,
+          "id": "cat",
+          "label": "кошка",
+          "asset": "cat.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 3,
+          "id": "kitten",
+          "label": "котёнок",
+          "asset": "kitten.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 4,
+          "id": "dog",
+          "label": "собака",
+          "asset": "dog.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 5,
+          "id": "puppy",
+          "label": "щенок",
+          "asset": "puppy.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 6,
+          "id": "rabbit",
+          "label": "кролик",
+          "asset": "rabbit.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 7,
+          "id": "hamster",
+          "label": "хомяк",
+          "asset": "hamster.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 8,
+          "id": "guinea_pig",
+          "label": "морская свинка",
+          "asset": "guinea_pig.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 9,
+          "id": "pet_rat",
+          "label": "крыса",
+          "asset": "pet_rat.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 10,
+          "id": "budgerigar",
+          "label": "попугай",
+          "asset": "budgerigar.webp",
+          "method": "GENERATE_SEPARATELY"
+        }
+      ]
+    },
+    {
+      "batch": 2,
+      "from": 11,
+      "to": 20,
+      "count": 10,
+      "cards": [
+        {
+          "number": 11,
+          "id": "goldfish",
+          "label": "золотая рыбка",
+          "asset": "goldfish.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 12,
+          "id": "tortoise",
+          "label": "черепаха",
+          "asset": "tortoise.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 13,
+          "id": "cow",
+          "label": "корова",
+          "asset": "cow.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 14,
+          "id": "bull",
+          "label": "бык",
+          "asset": "bull.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 15,
+          "id": "calf",
+          "label": "телёнок",
+          "asset": "calf.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 16,
+          "id": "horse",
+          "label": "лошадь",
+          "asset": "horse.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 17,
+          "id": "foal",
+          "label": "жеребёнок",
+          "asset": "foal.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 18,
+          "id": "donkey",
+          "label": "осёл",
+          "asset": "donkey.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 19,
+          "id": "pig",
+          "label": "свинья",
+          "asset": "pig.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 20,
+          "id": "piglet",
+          "label": "поросёнок",
+          "asset": "piglet.webp",
+          "method": "GENERATE_SEPARATELY"
+        }
+      ]
+    },
+    {
+      "batch": 3,
+      "from": 21,
+      "to": 30,
+      "count": 10,
+      "cards": [
+        {
+          "number": 21,
+          "id": "goat",
+          "label": "коза",
+          "asset": "goat.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 22,
+          "id": "goat_kid",
+          "label": "козлёнок",
+          "asset": "goat_kid.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 23,
+          "id": "sheep",
+          "label": "овца",
+          "asset": "sheep.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 24,
+          "id": "ram",
+          "label": "баран",
+          "asset": "ram.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 25,
+          "id": "lamb",
+          "label": "ягнёнок",
+          "asset": "lamb.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 26,
+          "id": "hen",
+          "label": "курица",
+          "asset": "hen.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 27,
+          "id": "rooster",
+          "label": "петух",
+          "asset": "rooster.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 28,
+          "id": "chick",
+          "label": "цыплёнок",
+          "asset": "chick.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 29,
+          "id": "duck",
+          "label": "утка",
+          "asset": "duck.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 30,
+          "id": "duckling",
+          "label": "утёнок",
+          "asset": "duckling.webp",
+          "method": "GENERATE_SEPARATELY"
+        }
+      ]
+    },
+    {
+      "batch": 4,
+      "from": 31,
+      "to": 40,
+      "count": 10,
+      "cards": [
+        {
+          "number": 31,
+          "id": "goose",
+          "label": "гусь",
+          "asset": "goose.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 32,
+          "id": "gosling",
+          "label": "гусёнок",
+          "asset": "gosling.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 33,
+          "id": "turkey",
+          "label": "индюк",
+          "asset": "turkey.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 34,
+          "id": "fox",
+          "label": "лиса",
+          "asset": "fox.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 35,
+          "id": "wolf",
+          "label": "волк",
+          "asset": "wolf.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 36,
+          "id": "brown_bear",
+          "label": "медведь",
+          "asset": "brown_bear.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 37,
+          "id": "hare",
+          "label": "заяц",
+          "asset": "hare.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 38,
+          "id": "squirrel",
+          "label": "белка",
+          "asset": "squirrel.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 39,
+          "id": "hedgehog",
+          "label": "ёж",
+          "asset": "hedgehog.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 40,
+          "id": "deer",
+          "label": "олень",
+          "asset": "deer.webp",
+          "method": "GENERATE_SEPARATELY"
+        }
+      ]
+    },
+    {
+      "batch": 5,
+      "from": 41,
+      "to": 50,
+      "count": 10,
+      "cards": [
+        {
+          "number": 41,
+          "id": "fawn",
+          "label": "оленёнок",
+          "asset": "fawn.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 42,
+          "id": "moose",
+          "label": "лось",
+          "asset": "moose.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 43,
+          "id": "wild_boar",
+          "label": "кабан",
+          "asset": "wild_boar.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 44,
+          "id": "lynx",
+          "label": "рысь",
+          "asset": "lynx.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 45,
+          "id": "raccoon",
+          "label": "енот",
+          "asset": "raccoon.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 46,
+          "id": "badger",
+          "label": "барсук",
+          "asset": "badger.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 47,
+          "id": "beaver",
+          "label": "бобр",
+          "asset": "beaver.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 48,
+          "id": "otter",
+          "label": "выдра",
+          "asset": "otter.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 49,
+          "id": "ferret",
+          "label": "хорёк",
+          "asset": "ferret.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 50,
+          "id": "chipmunk",
+          "label": "бурундук",
+          "asset": "chipmunk.webp",
+          "method": "GENERATE_SEPARATELY"
+        }
+      ]
+    },
+    {
+      "batch": 6,
+      "from": 51,
+      "to": 60,
+      "count": 10,
+      "cards": [
+        {
+          "number": 51,
+          "id": "mole",
+          "label": "крот",
+          "asset": "mole.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 52,
+          "id": "mouse",
+          "label": "мышь",
+          "asset": "mouse.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 53,
+          "id": "amur_tiger",
+          "label": "тигр",
+          "asset": "amur_tiger.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 54,
+          "id": "amur_leopard",
+          "label": "леопард",
+          "asset": "amur_leopard.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 55,
+          "id": "snow_leopard",
+          "label": "снежный барс",
+          "asset": "snow_leopard.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 56,
+          "id": "giant_panda",
+          "label": "панда",
+          "asset": "giant_panda.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 57,
+          "id": "red_panda",
+          "label": "красная панда",
+          "asset": "red_panda.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 58,
+          "id": "yak",
+          "label": "як",
+          "asset": "yak.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 59,
+          "id": "lion",
+          "label": "лев",
+          "asset": "lion.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 60,
+          "id": "lioness",
+          "label": "львица",
+          "asset": "lioness.webp",
+          "method": "GENERATE_SEPARATELY"
+        }
+      ]
+    },
+    {
+      "batch": 7,
+      "from": 61,
+      "to": 70,
+      "count": 10,
+      "cards": [
+        {
+          "number": 61,
+          "id": "elephant",
+          "label": "слон",
+          "asset": "elephant.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 62,
+          "id": "giraffe",
+          "label": "жираф",
+          "asset": "giraffe.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 63,
+          "id": "zebra",
+          "label": "зебра",
+          "asset": "zebra.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 64,
+          "id": "rhinoceros",
+          "label": "носорог",
+          "asset": "rhinoceros.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 65,
+          "id": "hippopotamus",
+          "label": "бегемот",
+          "asset": "hippopotamus.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 66,
+          "id": "monkey",
+          "label": "обезьяна",
+          "asset": "monkey.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 67,
+          "id": "gorilla",
+          "label": "горилла",
+          "asset": "gorilla.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 68,
+          "id": "cheetah",
+          "label": "гепард",
+          "asset": "cheetah.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 69,
+          "id": "hyena",
+          "label": "гиена",
+          "asset": "hyena.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 70,
+          "id": "ostrich",
+          "label": "страус",
+          "asset": "ostrich.webp",
+          "method": "GENERATE_SEPARATELY"
+        }
+      ]
+    },
+    {
+      "batch": 8,
+      "from": 71,
+      "to": 80,
+      "count": 10,
+      "cards": [
+        {
+          "number": 71,
+          "id": "meerkat",
+          "label": "сурикат",
+          "asset": "meerkat.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 72,
+          "id": "lemur",
+          "label": "лемур",
+          "asset": "lemur.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 73,
+          "id": "porcupine",
+          "label": "дикобраз",
+          "asset": "porcupine.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 74,
+          "id": "kangaroo",
+          "label": "кенгуру",
+          "asset": "kangaroo.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 75,
+          "id": "koala",
+          "label": "коала",
+          "asset": "koala.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 76,
+          "id": "wombat",
+          "label": "вомбат",
+          "asset": "wombat.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 77,
+          "id": "platypus",
+          "label": "утконос",
+          "asset": "platypus.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 78,
+          "id": "emu",
+          "label": "эму",
+          "asset": "emu.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 79,
+          "id": "capybara",
+          "label": "капибара",
+          "asset": "capybara.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 80,
+          "id": "sloth",
+          "label": "ленивец",
+          "asset": "sloth.webp",
+          "method": "GENERATE_SEPARATELY"
+        }
+      ]
+    },
+    {
+      "batch": 9,
+      "from": 81,
+      "to": 90,
+      "count": 10,
+      "cards": [
+        {
+          "number": 81,
+          "id": "anteater",
+          "label": "муравьед",
+          "asset": "anteater.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 82,
+          "id": "armadillo",
+          "label": "броненосец",
+          "asset": "armadillo.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 83,
+          "id": "alpaca",
+          "label": "альпака",
+          "asset": "alpaca.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 84,
+          "id": "polar_bear",
+          "label": "белый медведь",
+          "asset": "polar_bear.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 85,
+          "id": "arctic_fox",
+          "label": "песец",
+          "asset": "arctic_fox.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 86,
+          "id": "reindeer",
+          "label": "северный олень",
+          "asset": "reindeer.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 87,
+          "id": "camel",
+          "label": "верблюд",
+          "asset": "camel.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 88,
+          "id": "fennec",
+          "label": "фенек",
+          "asset": "fennec.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 89,
+          "id": "jerboa",
+          "label": "тушканчик",
+          "asset": "jerboa.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 90,
+          "id": "scorpion",
+          "label": "скорпион",
+          "asset": "scorpion.webp",
+          "method": "GENERATE_SEPARATELY"
+        }
+      ]
+    },
+    {
+      "batch": 10,
+      "from": 91,
+      "to": 100,
+      "count": 10,
+      "cards": [
+        {
+          "number": 91,
+          "id": "frog",
+          "label": "лягушка",
+          "asset": "frog.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 92,
+          "id": "crocodile",
+          "label": "крокодил",
+          "asset": "crocodile.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 93,
+          "id": "pike",
+          "label": "щука",
+          "asset": "pike.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 94,
+          "id": "catfish",
+          "label": "сом",
+          "asset": "catfish.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 95,
+          "id": "crayfish",
+          "label": "рак",
+          "asset": "crayfish.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 96,
+          "id": "crucian_carp",
+          "label": "карась",
+          "asset": "crucian_carp.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 97,
+          "id": "whale",
+          "label": "кит",
+          "asset": "whale.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 98,
+          "id": "dolphin",
+          "label": "дельфин",
+          "asset": "dolphin.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 99,
+          "id": "shark",
+          "label": "акула",
+          "asset": "shark.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 100,
+          "id": "ray",
+          "label": "скат",
+          "asset": "ray.webp",
+          "method": "GENERATE_SEPARATELY"
+        }
+      ]
+    },
+    {
+      "batch": 11,
+      "from": 101,
+      "to": 110,
+      "count": 10,
+      "cards": [
+        {
+          "number": 101,
+          "id": "walrus",
+          "label": "морж",
+          "asset": "walrus.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 102,
+          "id": "seal",
+          "label": "тюлень",
+          "asset": "seal.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 103,
+          "id": "octopus",
+          "label": "осьминог",
+          "asset": "octopus.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 104,
+          "id": "jellyfish",
+          "label": "медуза",
+          "asset": "jellyfish.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 105,
+          "id": "crab",
+          "label": "краб",
+          "asset": "crab.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 106,
+          "id": "starfish",
+          "label": "морская звезда",
+          "asset": "starfish.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 107,
+          "id": "seahorse",
+          "label": "морской конёк",
+          "asset": "seahorse.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 108,
+          "id": "sea_turtle",
+          "label": "морская черепаха",
+          "asset": "sea_turtle.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 109,
+          "id": "clownfish",
+          "label": "рыба-клоун",
+          "asset": "clownfish.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 110,
+          "id": "sparrow",
+          "label": "воробей",
+          "asset": "sparrow.webp",
+          "method": "GENERATE_SEPARATELY"
+        }
+      ]
+    },
+    {
+      "batch": 12,
+      "from": 111,
+      "to": 120,
+      "count": 10,
+      "cards": [
+        {
+          "number": 111,
+          "id": "pigeon",
+          "label": "голубь",
+          "asset": "pigeon.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 112,
+          "id": "crow",
+          "label": "ворона",
+          "asset": "crow.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 113,
+          "id": "magpie",
+          "label": "сорока",
+          "asset": "magpie.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 114,
+          "id": "owl",
+          "label": "сова",
+          "asset": "owl.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 115,
+          "id": "eagle",
+          "label": "орёл",
+          "asset": "eagle.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 116,
+          "id": "stork",
+          "label": "аист",
+          "asset": "stork.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 117,
+          "id": "woodpecker",
+          "label": "дятел",
+          "asset": "woodpecker.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 118,
+          "id": "cuckoo",
+          "label": "кукушка",
+          "asset": "cuckoo.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 119,
+          "id": "peacock",
+          "label": "павлин",
+          "asset": "peacock.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 120,
+          "id": "flamingo",
+          "label": "фламинго",
+          "asset": "flamingo.webp",
+          "method": "GENERATE_SEPARATELY"
+        }
+      ]
+    },
+    {
+      "batch": 13,
+      "from": 121,
+      "to": 130,
+      "count": 10,
+      "cards": [
+        {
+          "number": 121,
+          "id": "hummingbird",
+          "label": "колибри",
+          "asset": "hummingbird.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 122,
+          "id": "penguin",
+          "label": "пингвин",
+          "asset": "penguin.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 123,
+          "id": "great_tit",
+          "label": "синица",
+          "asset": "great_tit.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 124,
+          "id": "swallow",
+          "label": "ласточка",
+          "asset": "swallow.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 125,
+          "id": "seagull",
+          "label": "чайка",
+          "asset": "seagull.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 126,
+          "id": "bullfinch",
+          "label": "снегирь",
+          "asset": "bullfinch.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 127,
+          "id": "butterfly",
+          "label": "бабочка",
+          "asset": "butterfly.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 128,
+          "id": "bee",
+          "label": "пчела",
+          "asset": "bee.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 129,
+          "id": "ant",
+          "label": "муравей",
+          "asset": "ant.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 130,
+          "id": "ladybird",
+          "label": "божья коровка",
+          "asset": "ladybird.webp",
+          "method": "GENERATE_SEPARATELY"
+        }
+      ]
+    },
+    {
+      "batch": 14,
+      "from": 131,
+      "to": 140,
+      "count": 10,
+      "cards": [
+        {
+          "number": 131,
+          "id": "dragonfly",
+          "label": "стрекоза",
+          "asset": "dragonfly.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 132,
+          "id": "beetle",
+          "label": "жук",
+          "asset": "beetle.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 133,
+          "id": "grasshopper",
+          "label": "кузнечик",
+          "asset": "grasshopper.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 134,
+          "id": "snail",
+          "label": "улитка",
+          "asset": "snail.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 135,
+          "id": "spider",
+          "label": "паук",
+          "asset": "spider.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 136,
+          "id": "fly",
+          "label": "муха",
+          "asset": "fly.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 137,
+          "id": "mosquito",
+          "label": "комар",
+          "asset": "mosquito.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 138,
+          "id": "caterpillar",
+          "label": "гусеница",
+          "asset": "caterpillar.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 139,
+          "id": "earthworm",
+          "label": "дождевой червь",
+          "asset": "earthworm.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 140,
+          "id": "snake",
+          "label": "змея",
+          "asset": "snake.webp",
+          "method": "GENERATE_SEPARATELY"
+        }
+      ]
+    },
+    {
+      "batch": 15,
+      "from": 141,
+      "to": 142,
+      "count": 2,
+      "cards": [
+        {
+          "number": 141,
+          "id": "lizard",
+          "label": "ящерица",
+          "asset": "lizard.webp",
+          "method": "GENERATE_SEPARATELY"
+        },
+        {
+          "number": 142,
+          "id": "chameleon",
+          "label": "хамелеон",
+          "asset": "chameleon.webp",
+          "method": "GENERATE_SEPARATELY"
+        }
+      ]
+    }
+  ]
+}

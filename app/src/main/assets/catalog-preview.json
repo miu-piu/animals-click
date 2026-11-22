@@ -1,0 +1,301 @@
+{
+  "schema_version": "preview-1",
+  "note": "Temporary images for UI and gesture verification only; final collection lives in catalog/catalog-v2.json",
+  "cards": [
+    {
+      "id": "arich",
+      "label": "Ари",
+      "asset": "01-arich.webp"
+    },
+    {
+      "id": "kitten",
+      "label": "котёнок",
+      "asset": "02-kitten.webp"
+    },
+    {
+      "id": "irish-setter",
+      "label": "собака",
+      "asset": "03-irish-setter.webp"
+    },
+    {
+      "id": "rabbit",
+      "label": "кролик",
+      "asset": "04-rabbit.webp"
+    },
+    {
+      "id": "calf",
+      "label": "телёнок",
+      "asset": "05-calf.webp"
+    },
+    {
+      "id": "goat",
+      "label": "коза",
+      "asset": "06-goat.webp"
+    },
+    {
+      "id": "lamb",
+      "label": "ягнёнок",
+      "asset": "07-lamb.webp"
+    },
+    {
+      "id": "chick",
+      "label": "цыплёнок",
+      "asset": "08-chick.webp"
+    },
+    {
+      "id": "duckling",
+      "label": "утёнок",
+      "asset": "09-duckling.webp"
+    },
+    {
+      "id": "hedgehog",
+      "label": "ёж",
+      "asset": "10-hedgehog.webp"
+    },
+    {
+      "id": "squirrel",
+      "label": "белка",
+      "asset": "11-squirrel.webp"
+    },
+    {
+      "id": "ferret",
+      "label": "хорёк",
+      "asset": "12-ferret.webp"
+    },
+    {
+      "id": "fox",
+      "label": "лиса",
+      "asset": "13-fox.webp"
+    },
+    {
+      "id": "raccoon",
+      "label": "енот",
+      "asset": "14-raccoon.webp"
+    },
+    {
+      "id": "fawn",
+      "label": "оленёнок",
+      "asset": "15-fawn.webp"
+    },
+    {
+      "id": "bear",
+      "label": "медведь",
+      "asset": "16-bear.webp"
+    },
+    {
+      "id": "lynx",
+      "label": "рысь",
+      "asset": "17-lynx.webp"
+    },
+    {
+      "id": "chipmunk",
+      "label": "бурундук",
+      "asset": "18-chipmunk.webp"
+    },
+    {
+      "id": "amur-leopard",
+      "label": "леопард",
+      "asset": "19-amur-leopard.webp"
+    },
+    {
+      "id": "tiger",
+      "label": "тигр",
+      "asset": "20-tiger.webp"
+    },
+    {
+      "id": "lion",
+      "label": "лев",
+      "asset": "21-lion.webp"
+    },
+    {
+      "id": "elephant",
+      "label": "слон",
+      "asset": "22-elephant.webp"
+    },
+    {
+      "id": "giraffe",
+      "label": "жираф",
+      "asset": "23-giraffe.webp"
+    },
+    {
+      "id": "zebra",
+      "label": "зебра",
+      "asset": "24-zebra.webp"
+    },
+    {
+      "id": "camel",
+      "label": "верблюд",
+      "asset": "25-camel.webp"
+    },
+    {
+      "id": "capybara",
+      "label": "капибара",
+      "asset": "26-capybara.webp"
+    },
+    {
+      "id": "alpaca",
+      "label": "альпака",
+      "asset": "27-alpaca.webp"
+    },
+    {
+      "id": "panda",
+      "label": "панда",
+      "asset": "28-panda.webp"
+    },
+    {
+      "id": "hippo",
+      "label": "бегемот",
+      "asset": "29-hippo.webp"
+    },
+    {
+      "id": "rhino",
+      "label": "носорог",
+      "asset": "30-rhino.webp"
+    },
+    {
+      "id": "tit",
+      "label": "синица",
+      "asset": "31-tit.webp"
+    },
+    {
+      "id": "owl",
+      "label": "сова",
+      "asset": "32-owl.webp"
+    },
+    {
+      "id": "crow",
+      "label": "ворона",
+      "asset": "33-crow.webp"
+    },
+    {
+      "id": "magpie",
+      "label": "сорока",
+      "asset": "34-magpie.webp"
+    },
+    {
+      "id": "pigeon",
+      "label": "голубь",
+      "asset": "35-pigeon.webp"
+    },
+    {
+      "id": "flamingo",
+      "label": "фламинго",
+      "asset": "36-flamingo.webp"
+    },
+    {
+      "id": "hummingbird",
+      "label": "колибри",
+      "asset": "37-hummingbird.webp"
+    },
+    {
+      "id": "cuckoo",
+      "label": "кукушка",
+      "asset": "38-cuckoo.webp"
+    },
+    {
+      "id": "peacock",
+      "label": "павлин",
+      "asset": "39-peacock.webp"
+    },
+    {
+      "id": "swan",
+      "label": "лебедь",
+      "asset": "40-swan.webp"
+    },
+    {
+      "id": "whale",
+      "label": "кит",
+      "asset": "41-whale.webp"
+    },
+    {
+      "id": "shark",
+      "label": "акула",
+      "asset": "42-shark.webp"
+    },
+    {
+      "id": "penguin",
+      "label": "пингвин",
+      "asset": "43-penguin.webp"
+    },
+    {
+      "id": "seal",
+      "label": "тюлень",
+      "asset": "44-seal.webp"
+    },
+    {
+      "id": "dolphin",
+      "label": "дельфин",
+      "asset": "45-dolphin.webp"
+    },
+    {
+      "id": "octopus",
+      "label": "осьминог",
+      "asset": "46-octopus.webp"
+    },
+    {
+      "id": "seahorse",
+      "label": "морской конёк",
+      "asset": "47-seahorse.webp"
+    },
+    {
+      "id": "crab",
+      "label": "краб",
+      "asset": "48-crab.webp"
+    },
+    {
+      "id": "ray",
+      "label": "скат",
+      "asset": "49-ray.webp"
+    },
+    {
+      "id": "walrus",
+      "label": "морж",
+      "asset": "50-walrus.webp"
+    },
+    {
+      "id": "jellyfish",
+      "label": "медуза",
+      "asset": "51-jellyfish.webp"
+    },
+    {
+      "id": "snake",
+      "label": "змея",
+      "asset": "52-snake.webp"
+    },
+    {
+      "id": "lizard",
+      "label": "ящерица",
+      "asset": "53-lizard.webp"
+    },
+    {
+      "id": "butterfly",
+      "label": "бабочка",
+      "asset": "54-butterfly.webp"
+    },
+    {
+      "id": "bee",
+      "label": "пчела",
+      "asset": "55-bee.webp"
+    },
+    {
+      "id": "snail",
+      "label": "улитка",
+      "asset": "56-snail.webp"
+    },
+    {
+      "id": "lemur",
+      "label": "лемур",
+      "asset": "57-lemur.webp"
+    },
+    {
+      "id": "dragonfly",
+      "label": "стрекоза",
+      "asset": "58-dragonfly.webp"
+    },
+    {
+      "id": "ladybird",
+      "label": "божья коровка",
+      "asset": "59-ladybird.webp"
+    }
+  ]
+}

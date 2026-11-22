@@ -12,8 +12,9 @@ android {
         applicationId = "com.miupiu.zveryata"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        versionCode = 20001
+        versionName = "2.0.0-preview.1"
     }
 
     compileOptions {
@@ -43,18 +44,35 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
     debugImplementation("androidx.compose.ui:ui-tooling")
     testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test:runner:1.6.2")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.12.01"))
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
 
 val verifyCanonicalAssets by tasks.registering {
     doLast {
         val imagesDir = file("src/main/assets/images")
-        val images = imagesDir.listFiles()?.filter { it.extension.equals("webp", ignoreCase = true) } ?: emptyList()
-        check(images.size == 59) {
-            "Expected exactly 59 canonical WebP images in ${imagesDir.path}, found ${images.size}. Run: python3 scripts/sync_assets.py"
+        val runtimeCatalog = file("src/main/assets/catalog.json")
+        check(runtimeCatalog.exists()) {
+            "Missing staged catalog.json. Run scripts/package_content_v2.py first."
         }
-        val icon = file("src/main/res/drawable-nodpi/zveryata_icon.png")
-        check(icon.exists()) {
-            "Missing canonical launcher icon ${icon.path}. Run: python3 scripts/sync_assets.py"
+        val assets = Regex("\"asset\"\\s*:\\s*\"([^\"]+\\.webp)\"")
+            .findAll(runtimeCatalog.readText(Charsets.UTF_8))
+            .map { it.groupValues[1] }.toList()
+        check(assets.isNotEmpty() && assets.size == assets.distinct().size) {
+            "Runtime catalog is empty or contains duplicate image filenames"
+        }
+        val actual = imagesDir.listFiles()
+            ?.filter { it.extension.equals("webp", ignoreCase = true) }
+            ?.map { it.name }?.toSet() ?: emptySet()
+        check(actual == assets.toSet()) {
+            "Runtime images differ from catalog: missing=" + (assets.toSet() - actual) +
+                "; extra=" + (actual - assets.toSet())
+        }
+        check(file("src/main/res/drawable-nodpi/zveryata_icon.png").exists()) {
+            "Missing approved launcher icon"
         }
     }
 }

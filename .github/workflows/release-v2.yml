@@ -1,0 +1,82 @@
+name: Zveryata 2.0 signed release
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: zveryata-v2-signed-release
+  cancel-in-progress: false
+jobs:
+  signed-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      ZVERYATA_KEYSTORE_B64: ${{ secrets.ZVERYATA_KEYSTORE_B64 }}
+      ZVERYATA_KEYSTORE_PASSWORD: ${{ secrets.ZVERYATA_KEYSTORE_PASSWORD }}
+      ZVERYATA_KEY_ALIAS: ${{ secrets.ZVERYATA_KEY_ALIAS }}
+      ZVERYATA_KEY_PASSWORD: ${{ secrets.ZVERYATA_KEY_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Refuse unsigned or unconfigured release
+        shell: bash
+        run: |
+          test -n "$ZVERYATA_KEYSTORE_B64"
+          test -n "$ZVERYATA_KEYSTORE_PASSWORD"
+          test -n "$ZVERYATA_KEY_ALIAS"
+          test -n "$ZVERYATA_KEY_PASSWORD"
+          printf '%s' "$ZVERYATA_KEYSTORE_B64" | base64 --decode > "$RUNNER_TEMP/zveryata-release.jks"
+          test -s "$RUNNER_TEMP/zveryata-release.jks"
+      - name: Validate all 142 approved images and local originals
+        run: |
+          python3 -m pip install --disable-pip-version-check Pillow==11.3.0
+          python3 scripts/package_content_v2.py --mode release
+          python3 -m unittest discover -s tests -p 'test_*v2.py' -v
+      - name: Verify Kotlin logic, lint and build
+        run: gradle :app:testDebugUnitTest :app:lintRelease :app:assembleRelease --stacktrace
+      - name: Sign and verify release APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_apk="app/build/outputs/apk/release/app-release-unsigned.apk"
+          test -s "$source_apk"
+          tools_dir="$(find "$ANDROID_HOME/build-tools" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -1)"
+          signer="$tools_dir/apksigner"
+          test -x "$signer"
+          mkdir -p dist
+          "$signer" sign --ks "$RUNNER_TEMP/zveryata-release.jks" \
+            --ks-pass env:ZVERYATA_KEYSTORE_PASSWORD \
+            --ks-key-alias "$ZVERYATA_KEY_ALIAS" \
+            --key-pass env:ZVERYATA_KEY_PASSWORD \
+            --out "dist/Zveryata-2.0-release.apk" "$source_apk"
+          "$signer" verify --verbose --print-certs dist/Zveryata-2.0-release.apk
+          python3 - <<'PY'
+          import json, zipfile
+          p = "dist/Zveryata-2.0-release.apk"
+          with zipfile.ZipFile(p) as z:
+              assert z.testzip() is None
+              names = set(z.namelist())
+              catalog = json.loads(z.read("assets/catalog.json"))
+              assert catalog["content_mode"] == "release"
+              assert len(catalog["cards"]) == 142
+              for card in catalog["cards"]:
+                  assert "assets/images/" + card["asset"] in names
+              assert len([p for p in names if p.startswith("assets/images/") and p.endswith(".webp")]) == 142
+          PY
+          sha256sum dist/Zveryata-2.0-release.apk > dist/Zveryata-2.0-release.sha256
+      - name: Upload verified signed release
+        uses: actions/upload-artifact@v4
+        with:
+          name: zveryata-2-0-signed-release
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 30

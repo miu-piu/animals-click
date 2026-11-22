@@ -10,6 +10,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: zveryata-build-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -30,8 +34,24 @@ jobs:
         with:
           gradle-version: '8.9'
 
-      - name: Sync approved animal photos and icon
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install image conversion test dependency
+        run: python3 -m pip install --disable-pip-version-check Pillow==11.3.0
+
+      - name: Stage pinned legacy preview photos
         run: python3 scripts/sync_assets.py
+
+      - name: Stage unified Zveryata 2.0 runtime catalog
+        run: python3 scripts/package_content_v2.py --mode preview
+
+      - name: Validate Zveryata 2.0 catalog and preview bundle
+        run: python3 scripts/validate_catalog_v2.py
+
+      - name: Test content contracts and safe release packaging
+        run: python3 -m unittest discover -s tests -p 'test_*v2.py' -v
 
       - name: Verify exact source asset count
         run: |
@@ -48,6 +68,9 @@ jobs:
 
       - name: Run Android lint
         run: gradle :app:lintDebug --stacktrace
+
+      - name: Compile Android UI instrumentation tests
+        run: gradle :app:assembleDebugAndroidTest --stacktrace
 
       - name: Build debug APK
         run: gradle :app:assembleDebug --stacktrace
