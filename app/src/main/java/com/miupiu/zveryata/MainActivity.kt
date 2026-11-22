@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.weight
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.darkColorScheme
@@ -210,13 +209,14 @@ private fun AnimalGallery() {
         val headerHeight = naturalHeader.coerceAtLeast(104.dp)
             .coerceAtMost(maxHeight * 0.27f)
 
+        val screenWidth = maxWidth
         Column(Modifier.fillMaxSize()) {
             Box(
                 modifier = Modifier.fillMaxWidth().height(headerHeight).background(Ink),
                 contentAlignment = Alignment.Center
             ) {
                 val caption = cards[shownIndex].label
-                var fontSize by remember(caption, headerHeight, maxWidth) {
+                var fontSize by remember(caption, headerHeight, screenWidth) {
                     mutableFloatStateOf(32f)
                 }
                 Text(
