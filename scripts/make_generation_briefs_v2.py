@@ -15,6 +15,17 @@ ROOT = Path(__file__).resolve().parents[1]
 CATALOG = ROOT / "catalog/catalog-v2.json"
 
 CAMERA = {
+    "cat": "One adult grey-brown tabby domestic cat with white chest, calmly standing on all four paws on pale wood in a quiet home, entire tail visible. Do not depict a kitten.",
+    "kitten": "One orange-and-white domestic kitten around two to three months old with credible juvenile body and paws, standing fully visible on a plain light rug in a calm home.",
+    "dog": "One ADULT Irish RED SETTER dog with distinctive long silky chestnut coat, feathered ears and tail, standing fully visible on flat lawn; no other breed.",
+    "puppy": "One Irish RED SETTER PUPPY around three months old, red-chestnut young proportions, all paws and full tail visible on quiet flat garden lawn.",
+    "rabbit": "One adult domestic brown-and-white rabbit with both ears, paws and small tail visible on simple home enclosure flooring, no front bars.",
+    "hamster": "One adult golden Syrian hamster, realistic compact body, feet, ears and whiskers on simple clean enclosure surface, no toys.",
+    "guinea_pig": "One adult tricolor domestic guinea pig, natural rounded proportions and short visible legs on clean simple enclosure floor, no front bars.",
+    "pet_rat": "One adult grey-and-white domestic fancy rat with full thin long tail and all four pink feet visible on plain clean indoor shelf.",
+    "cow": "One adult black-and-white Holstein dairy cow, full legs and udder clearly visible on flat farm pasture.",
+    "bull": "One adult powerful brown domestic bull with clear male body proportions and no udder, peaceful stance on flat pasture.",
+    "calf": "One young black-and-white Holstein calf, clearly juvenile proportions, all four slender legs visible on smooth pasture.",
     "squirrel": "Entire tail arched visibly away from torso, paws on a simple branch; three-quarter lateral view.",
     "deer": "Adult stag (DEER, not leopard or any feline), standing on FOUR visible, naturally straight legs, antlers entirely inside the frame. Hooves rest on a simple smooth woodland clearing with no detailed leaf litter, gravel, stones or visible moss texture.",
     "fawn": "Young deer STANDING with all FOUR legs extended and separated, not lying or tucked.",
@@ -25,7 +36,7 @@ CAMERA = {
     "amur_leopard": "ADULT Far Eastern/Amur leopard, pale thick coat and LEOPARD rosettes (not jaguar center-spotted rosettes). Far Eastern temperate forest expressed through soft out-of-focus broad woodland tones, not a studio backdrop. Complete long tail and all paws. Stand on quiet smooth soil or a nearly textureless natural rock: no busy moss, layered leaves, pebbles or twigs.",
     "snow_leopard": "ADULT snow leopard/irbis with smoky-grey thick spotted fur and an exceptionally long heavy tail, standing on four paws against simple high mountain rock.",
     "peacock": "Adult male displaying one COMPLETE open tail-fan, every edge and feather tip inside the frame, feet visible; camera pulled back as needed.",
-    "ray": "Adult stingray viewed nearly from above in natural clear shallow sea; both full wing-like pectoral fins and whole long tail visible, no horseshoe crab features. Calm blue-grey or turquoise water and a smooth understated sandy seabed, no caustic light patterns, dappled highlights, sparkling reflections or textured spots of light on the animal or bottom.",
+    "ray": "ONE adult stingray swimming at a believable frontal and slightly side-on three-quarter perspective, NEVER directly from overhead. Show three-dimensional body, both wing-like pectoral fins, full long tail and anatomically accurate dorsal eyes/spiracles versus ventral mouth/gill slits. No human-like smile. Calm blue-grey or turquoise water, smooth quiet seafloor, no glare, caustic light bands or patterned reflections.",
     "octopus": "Exactly eight anatomically plausible arms separately readable across quiet seafloor, complete mantle.",
     "jellyfish": "Natural translucent bell and every tentacle distinctly visible against uncluttered blue water, no human-like eyes.",
     "snake": "Entire real grass snake in one gently extended S-curve across pale smooth sand or rock, never tightly coiled.",
